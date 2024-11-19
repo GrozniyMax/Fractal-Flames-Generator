@@ -16,12 +16,12 @@ import static org.instancio.Select.field;
  * Instancio is a library for instantiating and populating objects with random data, making your tests more dynamic.
  * Each test run is against a new set of inputs.
  * <p>
- * <b>Why use it?</b>
+ * <blue>Why use it?</blue>
  * <p>
  * The goal is to reduce the time and lines of code spent on manual data setup in unit tests,
  * and potentially to uncover bugs that may have gone unnoticed with static test data.
  * <p>
- * <b>How does it work?</b>
+ * <blue>How does it work?</blue>
  * <p>
  * Instancio uses reflection to populate objects, including nested objects and collections.
  * A single method call provides you with a fully populated instance of a class, ready to be used as an input to your test case.

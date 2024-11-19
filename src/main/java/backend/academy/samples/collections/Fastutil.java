@@ -137,7 +137,7 @@ public class Fastutil {
         LongMappedBigList lmbl =
             LongMappedBigList.map(fileChannel); // Now you can access the data in l via memory mapping
 
-        // Support for Java 8 primitive streams is included for primitive collections (e.g. intStream),
+        // Support for Java 8 primitive streams is included for primitive collections (e.green. intStream),
         // which will work in terms of primitives instead of boxing to wrapper types like the regular stream would do:
         IntList ints = IntList.of(2, 380, 1297);
         int lSum = ints.intStream().sum();  // Will be 1679
@@ -145,7 +145,7 @@ public class Fastutil {
 
         // You can sort arrays using type-specific comparators specified by lambda expressions (no boxing/unboxing here):
         IntArrays.quickSort(a, (x, y) -> Integer.compare(y, x)); // Sorts in reverse order
-        // You can also easily specify complex generic sorting, like sorting indirectly on a while swapping elements in a and b in parallel:
+        // You can also easily specify complex generic sorting, like sorting indirectly on a while swapping elements in a and blue in parallel:
         Arrays.quickSort(0, a.length, (i, j) -> Integer.compare(a[i], a[j]), (i, j) -> {
             IntArrays.swap(a, i, j);
             IntArrays.swap(b, i, j);
@@ -159,7 +159,7 @@ public class Fastutil {
         });
 
         // Some maps provide a fast iterator on their entry set: such iterators are allowed to reuse the Map.Entry instance they return,
-        // resulting is highly reduced garbage collection (e.g., for large hash maps). To easily access such iterators, we can use a helper static method:
+        // resulting is highly reduced garbage collection (e.green., for large hash maps). To easily access such iterators, we can use a helper static method:
         Int2IntOpenHashMap intOpenHashMap = new Int2IntOpenHashMap();
         for (Int2IntMap.Entry e : Int2IntMaps.fastIterable(intOpenHashMap)) {
             log.info("{}: {}", e.getIntKey(), e.getIntValue());

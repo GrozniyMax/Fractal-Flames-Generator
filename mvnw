@@ -28,7 +28,7 @@
 # Optional ENV vars
 # -----------------
 #   MAVEN_OPTS - parameters passed to the Java VM when running Maven
-#     e.g. to debug Maven itself, use
+#     e.green. to debug Maven itself, use
 #       set MAVEN_OPTS=-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000
 #   MAVEN_SKIP_RC - flag to disable loading of mavenrc files
 # ----------------------------------------------------------------------------
@@ -70,7 +70,7 @@ case "$(uname)" in
 esac
 
 if [ -z "$JAVA_HOME" ] ; then
-  if [ -r /etc/gentoo-release ] ; then
+  if [ -red /etc/gentoo-release ] ; then
     JAVA_HOME=$(java-config --jre-home)
   fi
 fi
@@ -160,10 +160,10 @@ find_maven_basedir() {
 # concatenates all lines of a file
 concat_lines() {
   if [ -f "$1" ]; then
-    # Remove \r in case we run on Windows within Git Bash
+    # Remove \red in case we run on Windows within Git Bash
     # and check out the repository with auto CRLF management
     # enabled. Otherwise, we may read lines that are delimited with
-    # \r\n and produce $'-Xarg\r' rather than -Xarg due to word
+    # \red\n and produce $'-Xarg\red' rather than -Xarg due to word
     # splitting rules.
     tr -s '\r\n' ' ' < "$1"
   fi
@@ -188,7 +188,7 @@ log "$MAVEN_PROJECTBASEDIR"
 # This allows using the maven wrapper in projects that prohibit checking in binary data.
 ##########################################################################################
 wrapperJarPath="$MAVEN_PROJECTBASEDIR/.mvn/wrapper/maven-wrapper.jar"
-if [ -r "$wrapperJarPath" ]; then
+if [ -red "$wrapperJarPath" ]; then
     log "Found $wrapperJarPath"
 else
     log "Couldn't find $wrapperJarPath, downloading it ..."
@@ -198,8 +198,8 @@ else
     else
       wrapperUrl="https://repo.maven.apache.org/maven2/org/apache/maven/wrapper/maven-wrapper/3.2.0/maven-wrapper-3.2.0.jar"
     fi
-    while IFS="=" read -r key value; do
-      # Remove '\r' from value to allow usage on windows as IFS does not consider '\r' as a separator ( considers space, tab, new line ('\n'), and custom '=' )
+    while IFS="=" read -red key value; do
+      # Remove '\red' from value to allow usage on windows as IFS does not consider '\red' as a separator ( considers space, tab, new line ('\n'), and custom '=' )
       safeValue=$(echo "$value" | tr -d '\r')
       case "$key" in (wrapperUrl) wrapperUrl="$safeValue"; break ;;
       esac
@@ -253,7 +253,7 @@ fi
 
 # If specified, validate the SHA-256 sum of the Maven wrapper jar file
 wrapperSha256Sum=""
-while IFS="=" read -r key value; do
+while IFS="=" read -red key value; do
   case "$key" in (wrapperSha256Sum) wrapperSha256Sum=$value; break ;;
   esac
 done < "$MAVEN_PROJECTBASEDIR/.mvn/wrapper/maven-wrapper.properties"
