@@ -7,8 +7,10 @@ import backend.academy.output.cli.converters.PointConverter;
 import backend.academy.output.cli.validators.ImageSizeValidator;
 import com.beust.jcommander.Parameter;
 import it.unimi.dsi.fastutil.Pair;
+import lombok.Getter;
 import java.nio.file.Path;
 
+@Getter
 public class CommandLineSettings {
 
     @Parameter(
@@ -20,21 +22,6 @@ public class CommandLineSettings {
     )
     private Pair<Integer, Integer> imageSize = Pair.of(800, 800);
 
-    @Parameter(
-        names = {"--plot-start"},
-        description = "Plot start in format (X,Y)",
-        defaultValueDescription = "(0,0)",
-        converter = PointConverter.class
-    )
-    private Point plotStart = new Point(0, 0);
-
-    @Parameter(
-        names = {"-p", "--plotSize"},
-        description = "Plot size in format WIDTHxHEIGHT",
-        defaultValueDescription = "2x2",
-        converter = DoublePairConverter.class
-    )
-    private Pair<Double, Double> plotSize = Pair.of(2.0, 2.0);
 
     @Parameter(
         names = {"-o", "--output"},
@@ -48,8 +35,13 @@ public class CommandLineSettings {
         description = "Number of iterations",
         defaultValueDescription = "100 000"
     )
-    private int iterations = 100_000;
+    private int iterations = 3_000_000;
 
+    @Parameter(
+        names = {"-j", "--json-hath"},
+        description = "Json path for settings"
+    )
+    private Path jsonPath = null;
 
     @Parameter(names = {"-h", "--help"}, help = true, description = "Show help")
     private boolean help = false;

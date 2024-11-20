@@ -1,9 +1,12 @@
 package backend.academy.model.image;
 
+import backend.academy.Main;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 import java.awt.Color;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 @Log4j2
 @ToString(exclude = "data")
@@ -38,6 +41,7 @@ public class Image {
 
     public void put(int x, int y, Color color) {
         if (!contains(x, y)) {
+            Main.count++;
             return;
         }
         data[y][x].hit(color);
@@ -45,5 +49,9 @@ public class Image {
 
     public Pixel get(int x, int y) {
         return data[y][x];
+    }
+
+    public Stream<Pixel[]> rowsStream() {
+        return Arrays.stream(data);
     }
 }

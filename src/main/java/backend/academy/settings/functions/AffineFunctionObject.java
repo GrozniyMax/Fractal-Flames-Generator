@@ -1,7 +1,12 @@
 package backend.academy.settings.functions;
 
+import backend.academy.settings.deserializers.AffineTransformationDeserialization;
 import backend.academy.transformations.AffineTransformation;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
+@JsonDeserialize(using = AffineTransformationDeserialization.class)
 public class AffineFunctionObject extends FunctionObject<AffineTransformation> {
 
     private double a;
@@ -15,4 +20,6 @@ public class AffineFunctionObject extends FunctionObject<AffineTransformation> {
     public AffineTransformation getRealType() {
         return new AffineTransformation(a, b, c, d, e, f);
     }
+
+
 }

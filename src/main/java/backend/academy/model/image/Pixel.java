@@ -9,7 +9,10 @@ import java.awt.Color;
 public class Pixel {
 
     // Поскольку пикселей будет много, то имеет смысл такого рода оптимизация.
-    // Это усложнит работу с пикселями, но уменьшит потребление памяти на 3 байта на пиксель
+    // Это усложнит работу с пикселями
+    // но уменьшит потребление памяти
+    // на 3 байта на пиксель в сравнении с short
+    // на 9 байт на пиксель с сравнении с int
     private byte r;
     private byte g;
     private byte b;
@@ -28,12 +31,13 @@ public class Pixel {
             convertByteToIntColorPart(r),
             convertByteToIntColorPart(g),
             convertByteToIntColorPart(b)
+//            convertHitCountToAlpha()
         );
     }
 
     public void hit(Color color) {
         hitCount++;
-        if (hitCount == 0) {
+        if (hitCount == 1) {
             setColor(color);
             return;
         }
@@ -41,9 +45,10 @@ public class Pixel {
     }
 
     private void mixColor(Color color) {
-        r = (byte) ((r + convertColorToByte(color.getRed())) / 2);
-        g = (byte) ((g + convertColorToByte(color.getGreen())) / 2);
-        b = (byte) ((b + convertColorToByte(color.getGreen())) / 2);
+        r = (byte) ((r + convertColorToByte(color.getRed()))/2);
+        g = (byte) ((g + convertColorToByte(color.getGreen()))/2);
+        b = (byte) ((b + convertColorToByte(color.getGreen()))/2);
+
     }
 
     public void setColor(Color color) {
@@ -54,6 +59,13 @@ public class Pixel {
 
     private int convertByteToIntColorPart(byte value) {
         return value+128;
+    }
+
+    private int convertHitCountToAlpha(){
+        return Math.min(
+            Math.max(0, hitCount),
+            255
+        );
     }
 
     private byte convertColorToByte(int color) {
@@ -67,6 +79,12 @@ public class Pixel {
 
     public static Pixel empty() {
         return new Pixel(Byte.MIN_VALUE, Byte.MIN_VALUE, Byte.MIN_VALUE);
+    }
+
+    public void multiply(double value) {
+        r = (byte) (r*value);
+        g = (byte) (g*value);
+        b = (byte) (b*value);
     }
 
 }

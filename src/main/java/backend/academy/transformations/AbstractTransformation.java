@@ -19,4 +19,16 @@ public interface AbstractTransformation extends Function<Point, Point> {
 
     @Override
     Point apply(Point point);
+
+    static double calculateR(Point point) {
+        return Math.sqrt(point.x() * point.x() + point.y() * point.y());
+    }
+
+    static double calculateTheta(Point point) {
+        return Math.atan2(point.x(), point.y());
+    }
+
+    static double calculatePhi(Point point) {
+        return Math.atan2(point.y(), point.x());
+    }
 }

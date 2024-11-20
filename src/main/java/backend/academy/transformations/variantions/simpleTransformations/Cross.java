@@ -1,13 +1,12 @@
 package backend.academy.transformations.variantions.simpleTransformations;
 
 import backend.academy.model.plot.Point;
-import backend.academy.transformations.AbstractTransformation;
 import backend.academy.transformations.variantions.SimpleVariation;
 
-public class Spherical implements SimpleVariation {
+public class Cross implements SimpleVariation {
     @Override
     public Point apply(Point point) {
-        double r = AbstractTransformation.calculateR(point);
-        return point.multiply(1.0 / (r*r));
+        double coeff = Math.sqrt(1/Math.pow(point.x()* point.x() - point.y()* point.y(), 2));
+        return point.multiply(coeff);
     }
 }

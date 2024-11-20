@@ -21,7 +21,7 @@ public record AffineTransformation(double a, double b, double c, double d, doubl
         double c = random.nextDouble(-1, 1);
         double d = random.nextDouble(-1, 1);
         double e = random.nextDouble(-1, 1);
-        double f = random.nextDouble(-1, 1);
+        double f = random.nextDouble(-0.5, 0.5);
         AffineTransformation result = new AffineTransformation(a, b, c, d, e, f);
         while (!result.correct()) {
             a = random.nextDouble(-1, 1);

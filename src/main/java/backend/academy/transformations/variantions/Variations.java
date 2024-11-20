@@ -1,11 +1,15 @@
 package backend.academy.transformations.variantions;
 
+import backend.academy.transformations.variantions.simpleTransformations.Cosine;
+import backend.academy.transformations.variantions.simpleTransformations.Cross;
+import backend.academy.transformations.variantions.simpleTransformations.Ex;
 import backend.academy.transformations.variantions.simpleTransformations.Handkerchief;
 import backend.academy.transformations.variantions.simpleTransformations.Horseshoe;
 import backend.academy.transformations.variantions.simpleTransformations.Identity;
 import backend.academy.transformations.variantions.simpleTransformations.Sinusoidal;
 import backend.academy.transformations.variantions.simpleTransformations.Spherical;
 import backend.academy.transformations.variantions.simpleTransformations.Swirl;
+import backend.academy.transformations.variantions.simpleTransformations.Tangent;
 import it.unimi.dsi.fastutil.Pair;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
@@ -25,7 +29,10 @@ public class Variations {
             Pair.of("spherical", new Spherical()),
             Pair.of("swirl", new Swirl()),
             Pair.of("horseshoe", new Horseshoe()),
-            Pair.of("handkerchief", new Handkerchief())
+            Pair.of("handkerchief", new Handkerchief()),
+            Pair.of("ex", new Ex())
+//            Pair.of("cross", new Cross())
+//            Pair.of("tangent", new Tangent())
         );
 
     @Getter
