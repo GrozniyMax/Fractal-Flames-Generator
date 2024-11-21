@@ -4,6 +4,8 @@ import backend.academy.Main;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import java.awt.Color;
+import java.awt.PageAttributes;
+import java.security.SecureRandom;
 
 @Log4j2
 public class Pixel {

@@ -7,8 +7,6 @@ import java.awt.Color;
 
 public class LogarithmicGammaCorrector extends AbstractLogarithmicGammaCorrection {
 
-    private static final double C = 0.5;
-
     public LogarithmicGammaCorrector(double gamma) {
         super(gamma);
     }
@@ -22,15 +20,9 @@ public class LogarithmicGammaCorrector extends AbstractLogarithmicGammaCorrectio
             }
         }
 
-        double maxHitLog = Math.log10(hitMax);
-        double gammaFactor;
         for (int i = 0; i < image.height(); i++) {
             for (int j = 0; j < image.width(); j++) {
                 if (image.get(j, i).hitCount() == 0) {
-                    continue;
-                }
-                if (image.get(j, i).hitCount() <= 2) {
-                    image.get(j, i).setColor( Color.BLACK);
                     continue;
                 }
                 image.get(j, i).multiply(Math.log(1+Math.pow(calculateB(image.get(j, i).hitCount(), hitMax), gamma)));

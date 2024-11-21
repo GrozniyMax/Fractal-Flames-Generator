@@ -1,66 +1,37 @@
 package backend.academy.generating;
 
-import backend.academy.generating.functions.Function;
 import backend.academy.generating.functions.Functions;
 import backend.academy.model.image.Image;
+import backend.academy.model.math.variations.Variations;
 import backend.academy.model.plot.Plot;
-import backend.academy.model.plot.Point;
-import backend.academy.output.cli.ProgressBar;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.extern.log4j.Log4j2;
-import java.util.Objects;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+import java.io.PrintStream;
 
-@Log4j2
-public class Generator {
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+public abstract class Generator {
 
-    private final Functions functions;
-    private final Image image;
-    private final Plot plot;
-    private int iterations = 10000;
-    @Getter
-    private ProgressBar progressBar;
+    protected final Functions functions;
+    protected final Image image;
+    protected final Plot plot;
+    protected int iterations = 10000;
+    protected PrintStream out;
 
-    @Builder
-    public Generator(Integer imageWidth, Integer imageHeight,
-                                 Double plotX, Double plotY,
-                                 Double plotWidth, Double plotHeight,
-                                 Functions functions, int iterations,
-    ProgressBar progressBar
+    protected Generator(
+        @NonNull Integer imageWidth, @NonNull Integer imageHeight,
+        @NonNull Double plotX, @NonNull Double plotY,
+        @NonNull Double plotWidth, @NonNull Double plotHeight,
+        @NonNull Functions functions, @Nullable Variations variations,
+        int iterations, @NonNull PrintStream out
     ) {
-        this.functions = Objects.requireNonNull(functions);
-
-        this.image = new Image(
-            Objects.requireNonNull(imageWidth),
-            Objects.requireNonNull(imageHeight));
-
-        this.plot = new Plot(
-            Objects.requireNonNull(plotX),
-            Objects.requireNonNull(plotY),
-            Objects.requireNonNull(plotWidth),
-            Objects.requireNonNull(plotHeight));
-        this.iterations = iterations;
-        this.progressBar = progressBar;
+        this(functions,
+            new Image(imageWidth, imageHeight),
+            new Plot(plotX, plotY, plotWidth, plotHeight),
+            iterations, out);
     }
 
 
-    public Image generate() {
-        log.info("Setup generating parameters: iterations: {},  {}, image:{}x{}", iterations, plot, image.height(), image.width());
-        Function functionToApply;
-        Point point = plot.getRandomPoint();
-        log.info("Starting point: {}", point);
-        for (int i = 0; i < 20; i++) {
-            functionToApply = functions.getRandom();
-            point = functionToApply.accept(point);
-        }
-        log.info("After 20 iterations: {}", point);
-
-
-        for (int i = 0; i < iterations; i++) {
-            functionToApply = functions.getRandom();
-            point = functionToApply.acceptAndPutToImage(point, plot, image);
-            progressBar.update(i);
-        }
-        return image;
-    }
+    public abstract Image generate();
 }

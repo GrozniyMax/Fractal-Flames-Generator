@@ -1,31 +1,19 @@
 package backend.academy;
 
-import backend.academy.correction.logarithmicGammaCorrection.realisations.LogarithmicGammaCorrector;
-import backend.academy.generating.functions.Function;
-import backend.academy.generating.functions.Functions;
-import backend.academy.generating.Generator;
-import backend.academy.model.image.Image;
-import backend.academy.output.image.SingleTreadImageWriter;
-import backend.academy.output.cli.CommandLineSettings;
+import backend.academy.input.cli.CommandLineSettings;
 import backend.academy.processing.PipelineBuilder;
-import backend.academy.settings.Settings;
-import backend.academy.transformations.AffineTransformation;
-import backend.academy.transformations.SimpleFunction;
+import backend.academy.input.configuration.Settings;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import com.fasterxml.jackson.core.JacksonException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.experimental.UtilityClass;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.core.config.Configurator;
-import java.awt.Color;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
 import java.nio.file.Path;
 import java.util.Objects;
 
@@ -67,7 +55,7 @@ public class Main {
                 )
             );
         } catch (IllegalArgumentException | JacksonException e) {
-            System.out.println("Invalid json structure");
+            System.out.println("Invalid json structure due to: " + e.getMessage());
             return;
         }
 
@@ -81,7 +69,7 @@ public class Main {
             System.out.println("Unexpected error while generating image. Sorry but image was not generates");
             throw new RuntimeException(e);
         }
-        System.out.printf("Skipped %d points", count);
+        log.debug("{} points were skipped because they're out of image size", count);
 
     }
 

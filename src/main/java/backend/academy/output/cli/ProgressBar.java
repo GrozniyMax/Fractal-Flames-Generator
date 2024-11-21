@@ -1,7 +1,6 @@
 package backend.academy.output.cli;
 
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import java.io.PrintStream;
 
@@ -12,42 +11,54 @@ public class ProgressBar {
 
     private final int maxIterations;
     private final PrintStream out;
+    private final int updateEveryN;
+    private final int length;
+    private int currentN = 0;
 
     @Builder
-    public ProgressBar(int maxIterations, PrintStream out) {
+    public ProgressBar(int maxIterations, PrintStream out, int updateEveryN, int length) {
         this.maxIterations = maxIterations;
         this.out = out;
+        this.updateEveryN = updateEveryN;
+        this.length = length;
     }
-
-    private int currentN = 0;
 
     public void update(int currentIteration) {
 
         // Обновили счетчик
         currentN++;
-        if (currentN != UPDATE_EVERY_N) {
+        if (currentN != updateEveryN) {
             return;
         }
         currentN = 0;
 
         StringBuilder builder = new StringBuilder();
-        builder.append(' ').repeat("-", LENGTH).append('\n');
+        builder.append(' ').repeat("-", length).append('\n');
 
         int currentLength = translate(currentIteration);
 
         builder.append('|')
-            .repeat("=", currentLength)
-            .repeat(" ", LENGTH - currentLength)
-            .append('|').append("\n");
+            .repeat("=", (currentLength))
+            .repeat(" ", length - currentLength)
+            .append('|')
+            .append("%.2f".formatted(((double) currentIteration) / maxIterations * 100) + "%")
+            .append("\n");
 
-        builder.append(" ").repeat("-", LENGTH).append("\n");
+        builder.append(" ").repeat("-", length).append("\n");
 
         out.println(builder);
     }
 
     private int translate(double current) {
-        return (int) (current / maxIterations * LENGTH);
+        return (int) (current / maxIterations * length);
+    }
 
+    public static ProgressBar createDefault(int maxIterations, PrintStream out) {
+        return createWithDefaultLength(maxIterations, out, UPDATE_EVERY_N);
+    }
+
+    public static ProgressBar createWithDefaultLength(int maxIterations, PrintStream out, int updateEveryN) {
+        return new ProgressBar(maxIterations, out, updateEveryN, LENGTH);
     }
 
 }

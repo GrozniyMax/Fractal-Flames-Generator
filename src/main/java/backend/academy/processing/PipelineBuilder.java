@@ -1,60 +1,63 @@
 package backend.academy.processing;
 
 import backend.academy.correction.Corrector;
-import backend.academy.generating.Generator;
-import backend.academy.generating.functions.Function;
+import backend.academy.generating.GeneratorBuilder;
 import backend.academy.generating.functions.Functions;
-import backend.academy.output.cli.CommandLineSettings;
+import backend.academy.model.math.variations.Variations;
+import backend.academy.input.cli.CommandLineSettings;
 import backend.academy.output.cli.ProgressBar;
 import backend.academy.output.image.ImageWriter;
 import backend.academy.output.image.MultiTreadImageWriter;
 import backend.academy.output.image.SingleTreadImageWriter;
-import backend.academy.settings.PipelineObject;
-import backend.academy.settings.Settings;
-import backend.academy.settings.symmetry.NoneSymmetry;
+import backend.academy.input.configuration.PipelineObject;
+import backend.academy.input.configuration.Settings;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import java.io.PrintStream;
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 @Log4j2
 @Getter
 public class PipelineBuilder {
 
-    private Generator.GeneratorBuilder generatorBuilder = Generator.builder();
+    private GeneratorBuilder generatorBuilder = new GeneratorBuilder();
 
-    private Corrector corrector;
+    private List<Corrector> correctors = new LinkedList<>();
 
     private ImageWriter writer;
 
-    private ProgressBar.ProgressBarBuilder progressBarBuilder = ProgressBar.builder();
+    private PrintStream out;
 
     private Path outputFile;
 
-    public PipelineBuilder fill(PipelineObject pipelineObject) {
+    public PipelineBuilder fill(PipelineObject rawPipelineObject) {
+        var completedPipelineObject = rawPipelineObject.complete();
         this.generatorBuilder
-            .plotX(pipelineObject.plot().x())
-            .plotY(pipelineObject.plot().y())
-            .plotWidth(pipelineObject.plot().width())
-            .plotHeight(pipelineObject.plot().height());
+            .plotX(completedPipelineObject.plot().x())
+            .plotY(completedPipelineObject.plot().y())
+            .plotWidth(completedPipelineObject.plot().width())
+            .plotHeight(completedPipelineObject.plot().height());
 
-        switch (pipelineObject.mode()) {
+        switch (completedPipelineObject.mode()) {
             case MULTI_THREAD -> writer = new MultiTreadImageWriter();
             case SINGLE_THREAD -> writer = new SingleTreadImageWriter();
         }
 
-        corrector = pipelineObject.correctionObject().getRealType();
+        this.correctors = completedPipelineObject.corrections();
 
         return this;
     }
 
     public PipelineBuilder fill(Settings settings) {
         Functions functions = new Functions();
-        settings.functions().stream()
-            .map(functionObject -> new Function(functionObject.getRealType(), functionObject.color()))
-            .forEach(functions::add);
-        if (!(settings.pipeline().symmetry() instanceof NoneSymmetry)) {
-            functions.addSymmetry(settings.pipeline().symmetry().getRealType());
+        settings.functions()
+            .forEach(f-> functions.add(f.toFunction()));
+
+        if (Objects.nonNull(settings.activeVariations())) {
+            functions.setVariationsForAll(Variations.get(settings.activeVariations()));
         }
         this.generatorBuilder.functions(functions);
         fill(settings.pipeline());
@@ -67,25 +70,24 @@ public class PipelineBuilder {
             .imageWidth(settings.imageSize().right())
             .iterations(settings.iterations());
 
-        progressBarBuilder.maxIterations(settings.iterations());
-
         this.outputFile = settings.output();
 
         return this;
     }
 
     public PipelineBuilder output(PrintStream output) {
-        this.progressBarBuilder.out(output);
+        this.generatorBuilder().out(output);
+        this.out = output;
         return this;
     }
 
     public Pipeline build() {
-        this.generatorBuilder.progressBar(this.progressBarBuilder.build());
         return new Pipeline(
             generatorBuilder.build(),
-            this.corrector,
+            this.correctors,
             this.writer,
-            this.outputFile
+            this.outputFile,
+            this.out
         );
     }
 

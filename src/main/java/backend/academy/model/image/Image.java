@@ -44,7 +44,12 @@ public class Image {
             Main.count++;
             return;
         }
-        data[y][x].hit(color);
+        // Вносим синхронизацию, чтобы цвета смешивались
+        // даже если несколько потоков пытаются добавить цвет
+        // Синхронизируем по конкретному пикселю
+        synchronized (data[y][x]){
+            data[y][x].hit(color);
+        }
     }
 
     public Pixel get(int x, int y) {
