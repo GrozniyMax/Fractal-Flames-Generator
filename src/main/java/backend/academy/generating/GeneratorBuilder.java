@@ -6,8 +6,10 @@ import backend.academy.model.math.variations.Variations;
 import backend.academy.model.plot.Plot;
 import backend.academy.output.cli.ProgressBar;
 import backend.academy.input.configuration.Modes;
+import lombok.Getter;
 import java.io.PrintStream;
 
+@Getter
 public class GeneratorBuilder {
 
     private Integer imageWidth;

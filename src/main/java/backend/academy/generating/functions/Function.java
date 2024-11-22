@@ -24,7 +24,7 @@ public class Function {
         this.color = color;
     }
 
-    public Point acceptAndPutToImage(Point point, Plot plot, Image image) {
+    public final Point acceptAndPutToImage(Point point, Plot plot, Image image) {
         Point result = accept(point);
         put(result, plot, image);
         return result;
@@ -40,19 +40,21 @@ public class Function {
         );
     }
 
-    public Point accept(Point point) {
+    public final Point accept(Point point) {
+        if (Double.isNaN(point.x()) || Double.isNaN(point.y())) {
+            log.error("Point coordinate became NaN");
+            return Point.random();
+        }
         return transformation.apply(point);
     }
 
     private int convertX(double x, Plot plot, Image image) {
         int pixel = (int) (((x - plot.x()) / plot.width()) * (image.width()));
-        log.debug("Converted x: from {} to {}", x, pixel);
         return pixel;
     }
 
     private int convertY(double y, Plot plot, Image image) {
         int pixel = (int) (((y - plot.y()) / plot.height()) * (image.height()));
-        log.debug("Converted y: from {} to {}", y, pixel);
         return pixel;
     }
 

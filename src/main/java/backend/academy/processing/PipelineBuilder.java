@@ -48,6 +48,19 @@ public class PipelineBuilder {
 
         this.correctors = completedPipelineObject.corrections();
 
+        if (Objects.nonNull(completedPipelineObject.symmetry())) {
+            log.debug("Symmetry: {} was detected and added", completedPipelineObject.symmetry());
+            this.generatorBuilder.functions().addSymmetry(completedPipelineObject.symmetry());
+        }
+        if (Objects.nonNull(completedPipelineObject.postTransformations())) {
+            log.debug("Post transformations: {} were detected and added", completedPipelineObject.postTransformations());
+            completedPipelineObject.postTransformations()
+                .forEach(f -> {
+                    log.debug("Adding post transformation: {}", f.getClass().getSimpleName());
+                    this.generatorBuilder.functions().andThenForAll(f);
+                });
+        }
+
         return this;
     }
 
@@ -57,6 +70,7 @@ public class PipelineBuilder {
             .forEach(f-> functions.add(f.toFunction()));
 
         if (Objects.nonNull(settings.activeVariations())) {
+            log.debug("Allowed variations: {}", settings.activeVariations());
             functions.setVariationsForAll(Variations.get(settings.activeVariations()));
         }
         this.generatorBuilder.functions(functions);

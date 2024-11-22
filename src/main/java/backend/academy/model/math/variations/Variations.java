@@ -24,7 +24,15 @@ public class Variations {
             Pair.of("handkerchief", new Handkerchief()),
             Pair.of("ex", new Ex()),
             Pair.of("cross", new Cross()),
-            Pair.of("tangent", new Tangent())
+            Pair.of("tangent", new Tangent()),
+            Pair.of("disc", new Disc()),
+            Pair.of("spiral", new Spiral()),
+            Pair.of("hyperbolic", new Hyperbolic()),
+            Pair.of("diamond", new Diamond()),
+            Pair.of("julia", new Julia()),
+            Pair.of("polar", new Polar()),
+            Pair.of("heart", new Heart()),
+            Pair.of("exponential", new Exponential())
         ));
 
     public static Variations getFull() {

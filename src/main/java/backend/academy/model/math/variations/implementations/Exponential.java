@@ -3,12 +3,14 @@ package backend.academy.model.math.variations.implementations;
 import backend.academy.model.math.variations.SimpleVariation;
 import backend.academy.model.plot.Point;
 
-public final class Cosine implements SimpleVariation {
+public class Exponential implements SimpleVariation {
+    // Number 18
     @Override
     public Point apply(Point point) {
+        double exp = Math.exp(point.x() - 1);
         return new Point(
-            Math.cos(Math.PI* point.x())*Math.cosh(point.y()),
-            -Math.sin(Math.PI* point.x())*Math.sinh(point.y())
+            exp * Math.cos(Math.PI * point.y()),
+            exp * Math.sin(Math.PI * point.y())
         );
     }
 }

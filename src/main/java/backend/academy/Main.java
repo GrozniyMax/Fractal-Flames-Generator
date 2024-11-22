@@ -14,6 +14,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.Objects;
 
@@ -59,7 +61,18 @@ public class Main {
             return;
         }
 
-        pipelineBuilder.output(System.out);
+
+        if(cliSettings.supressOutput()){
+            pipelineBuilder.output(new PrintStream(new OutputStream() {
+                @Override
+                public void write(int b) throws IOException {
+
+                }
+            }));
+        }else {
+            pipelineBuilder.output(System.out);
+        }
+
 
         try {
             pipelineBuilder

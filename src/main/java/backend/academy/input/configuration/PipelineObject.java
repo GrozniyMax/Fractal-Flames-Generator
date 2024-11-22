@@ -4,6 +4,7 @@ import backend.academy.correction.Corrector;
 import backend.academy.correction.NoCorrection;
 import backend.academy.correction.logarithmicGammaCorrection.AbstractLogarithmicGammaCorrection;
 import backend.academy.correction.logarithmicGammaCorrection.GammaCorrectionFactory;
+import backend.academy.correction.stupidCorrection.SingleTreadStupidCorrection;
 import backend.academy.correction.stupidCorrection.StupidCorrection;
 import backend.academy.input.configuration.deserializers.PlotDeserializer;
 import backend.academy.model.image.Image;
@@ -60,9 +61,10 @@ public class PipelineObject {
     })
     private Symmetry symmetry;
 
-    @JsonProperty("correction")
+    @JsonProperty("corrections")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
     @JsonSubTypes({
-        @JsonSubTypes.Type(value = StupidCorrection.class, name = "stupid"),
+        @JsonSubTypes.Type(value = SingleTreadStupidCorrection.class, name = "stupid"),
         @JsonSubTypes.Type(value = NoCorrection.class, name = "none"),
         @JsonSubTypes.Type(value = LogarithmicGammaCorrectionObject.class, name = "logarithmic")
     })
@@ -96,7 +98,7 @@ public class PipelineObject {
         result.symmetry = this.symmetry;
         result.postTransformations = this.postTransformations;
         if (Objects.isNull(this.corrections)){
-            result.corrections = List.of();
+            this.corrections = List.of();
         }
         result.corrections = new LinkedList<>(this.corrections);
 

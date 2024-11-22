@@ -1,37 +1,72 @@
 {
-    "active-variations": [
-        ""
-    ],
-
     "functions": [
         {
             "transformation": {
-                "type": "affine",
-                "generated": "random"
+                "type": "simple",
+                "basic": {
+                    "generated": "random"
+                }
             },
-            "color": [45, 45, 45]
+            "color": [
+                255,
+                0,
+                0
+            ]
         },
         {
             "transformation": {
                 "type": "simple",
                 "basic": {
-                    "generated" : "random"
+                    "generated": "random"
                 }
-            }
+            },
+            "color": [
+                0,
+                255,
+                0
+            ]
+        },
+        {
+            "transformation": {
+                "type": "simple",
+                "basic": {
+                    "generated": "random"
+                }
+            },
+            "color": [
+                0,
+                0,
+                255
+            ]
+        },
+        {
+            "transformation": {
+                "type": "simple",
+                "basic": {
+                    "generated": "random"
+                }
+            },
+            "color": [
+                255,
+                255,
+                255
+            ]
         }
     ],
     "pipeline": {
         "mode": "SINGLE_THREAD",
         "plot": "default",
         "post-transformations": [
-
+            {
+                "type": "multiplication",
+                "coefficent": 1.5
+            }
         ],
-        "symmetry": {
-
-        },
-
-        "correction": [
-
+        "corrections": [
+            {
+                "type": "stupid",
+                "hit-count": 5
+            }
         ]
     }
 }
