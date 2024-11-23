@@ -45,15 +45,11 @@ public class Function {
     }
 
     private int convertX(double x, Plot plot, Image image) {
-        int pixel = (int) (((x - plot.x()) / plot.width()) * (image.width()));
-        log.debug("Converted x: from {} to {}", x, pixel);
-        return pixel;
+        return (int) (((x - plot.x()) / plot.width()) * (image.width()));
     }
 
     private int convertY(double y, Plot plot, Image image) {
-        int pixel = (int) (((y - plot.y()) / plot.height()) * (image.height()));
-        log.debug("Converted y: from {} to {}", y, pixel);
-        return pixel;
+        return (int) (((y - plot.y()) / plot.height()) * (image.height()));
     }
 
     public void andThen(MathFucntion function) {

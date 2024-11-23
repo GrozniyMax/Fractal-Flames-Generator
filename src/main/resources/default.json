@@ -1,8 +1,4 @@
 {
-    "active-variations": [
-        ""
-    ],
-
     "functions": [
         {
             "transformation": {
@@ -26,12 +22,13 @@
         "post-transformations": [
 
         ],
-        "symmetry": {
-
-        },
 
         "correction": [
-
+            {
+                "type": "logarithmic",
+                "thread-options": "single",
+                "gamma": 1.2
+            }
         ]
     }
 }

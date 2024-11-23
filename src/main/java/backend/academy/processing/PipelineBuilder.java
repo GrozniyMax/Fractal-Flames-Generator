@@ -42,11 +42,12 @@ public class PipelineBuilder {
             .plotHeight(completedPipelineObject.plot().height());
 
         switch (completedPipelineObject.mode()) {
-            case MULTI_THREAD -> writer = new MultiTreadImageWriter();
+            case MULTI_THREAD -> writer = new SingleTreadImageWriter();
             case SINGLE_THREAD -> writer = new SingleTreadImageWriter();
         }
 
         this.correctors = completedPipelineObject.corrections();
+        this.generatorBuilder.mode(completedPipelineObject.mode());
 
         return this;
     }

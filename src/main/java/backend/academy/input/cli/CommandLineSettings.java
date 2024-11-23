@@ -42,4 +42,10 @@ public class CommandLineSettings {
 
     @Parameter(names = {"-h", "--help"}, help = true, description = "Show help")
     private boolean help = false;
+
+    @Parameter(
+        names = {"--suppress-output"},
+        description = "Whether to suppress output"
+    )
+    private boolean suppress = false;
 }

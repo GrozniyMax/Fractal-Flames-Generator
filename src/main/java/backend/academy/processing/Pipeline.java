@@ -6,11 +6,13 @@ import backend.academy.generating.SingleTreadGenerator;
 import backend.academy.model.image.Image;
 import backend.academy.output.image.ImageWriter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Consumer;
 
+@Log4j2
 @RequiredArgsConstructor
 public class Pipeline {
 
@@ -21,6 +23,8 @@ public class Pipeline {
     private final PrintStream out;
 
     public void run() {
+        log.debug("Started pipeline with {}, {},", generator.getClass(), imageWriter.getClass());
+
         try {
             out.println("Started generation ...");
             Image generated = generator.generate();

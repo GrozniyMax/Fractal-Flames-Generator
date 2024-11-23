@@ -5,6 +5,7 @@ import backend.academy.correction.NoCorrection;
 import backend.academy.correction.logarithmicGammaCorrection.AbstractLogarithmicGammaCorrection;
 import backend.academy.correction.logarithmicGammaCorrection.GammaCorrectionFactory;
 import backend.academy.correction.stupidCorrection.StupidCorrection;
+import backend.academy.input.configuration.deserializers.LogarithmicCorrectionObjectDeserializer;
 import backend.academy.input.configuration.deserializers.PlotDeserializer;
 import backend.academy.model.image.Image;
 import backend.academy.model.math.MathFucntion;
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -61,6 +63,7 @@ public class PipelineObject {
     private Symmetry symmetry;
 
     @JsonProperty("correction")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
     @JsonSubTypes({
         @JsonSubTypes.Type(value = StupidCorrection.class, name = "stupid"),
         @JsonSubTypes.Type(value = NoCorrection.class, name = "none"),
@@ -69,12 +72,15 @@ public class PipelineObject {
     private List<Corrector> corrections;
 
 
+    @JsonDeserialize(using = LogarithmicCorrectionObjectDeserializer.class)
     public static class LogarithmicGammaCorrectionObject extends AbstractLogarithmicGammaCorrection {
 
         private String treadOption;
 
         @JsonCreator
-        protected LogarithmicGammaCorrectionObject(double gamma, String treadOption) {
+        protected LogarithmicGammaCorrectionObject(
+            @JsonProperty("gamma") double gamma,
+            @JsonProperty("thread-option") String treadOption) {
             super(gamma);
             this.treadOption = treadOption;
         }
@@ -98,11 +104,11 @@ public class PipelineObject {
         if (Objects.isNull(this.corrections)){
             result.corrections = List.of();
         }
-        result.corrections = new LinkedList<>(this.corrections);
+        result.corrections = new LinkedList<>();
 
         this.corrections.forEach(corrector -> {
             if (corrector instanceof LogarithmicGammaCorrectionObject t){
-                result.corrections.add(t);
+                result.corrections.add(t.getReal());
                 return;
             }
             result.corrections.add(corrector);

@@ -14,6 +14,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.Objects;
 
@@ -43,7 +45,7 @@ public class Main {
             return;
         }
 
-        Configurator.setRootLevel(org.apache.logging.log4j.Level.OFF);
+//        Configurator.setRootLevel(org.apache.logging.log4j.Level.OFF);
         pipelineBuilder.fill(cliSettings);
 
         try {
@@ -59,8 +61,19 @@ public class Main {
             return;
         }
 
-        pipelineBuilder.output(System.out);
+        if (!cliSettings.suppress()){
+            pipelineBuilder.output(new PrintStream(new OutputStream() {
+                @Override
+                public void write(int b) throws IOException {
+                    // do nothing;
+                }
+            }));
+        }else {
+            pipelineBuilder.output(System.out);
+        }
 
+
+        long start = System.currentTimeMillis();
         try {
             pipelineBuilder
                 .build()
@@ -70,6 +83,8 @@ public class Main {
             throw new RuntimeException(e);
         }
         log.debug("{} points were skipped because they're out of image size", count);
+        long end = System.currentTimeMillis();
+        log.info("Execution time: {}", end-start);
 
     }
 
