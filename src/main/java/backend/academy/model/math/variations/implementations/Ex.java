@@ -3,8 +3,7 @@ package backend.academy.model.math.variations.implementations;
 import backend.academy.model.math.variations.SimpleVariation;
 import backend.academy.model.plot.Point;
 
-public final class Ex implements SimpleVariation {
-    // Number 12
+public class Ex implements SimpleVariation {
 
     private double p0(Point p){
         return Math.sin(SimpleVariation.calculateTheta(p) + SimpleVariation.calculateR(p));

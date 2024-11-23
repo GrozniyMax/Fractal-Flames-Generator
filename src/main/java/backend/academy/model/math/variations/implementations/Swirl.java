@@ -4,7 +4,6 @@ import backend.academy.model.math.variations.SimpleVariation;
 import backend.academy.model.plot.Point;
 
 public class Swirl implements SimpleVariation {
-    // Number 3
     @Override
     public Point apply(Point point) {
         double r = SimpleVariation.calculateR(point);

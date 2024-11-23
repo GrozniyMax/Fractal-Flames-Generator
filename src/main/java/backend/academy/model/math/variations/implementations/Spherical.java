@@ -4,7 +4,6 @@ import backend.academy.model.math.variations.SimpleVariation;
 import backend.academy.model.plot.Point;
 
 public class Spherical implements SimpleVariation {
-    // Number 2
     @Override
     public Point apply(Point point) {
         double r = SimpleVariation.calculateR(point);

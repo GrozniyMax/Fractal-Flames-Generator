@@ -3,7 +3,7 @@ package backend.academy.model.math.variations.implementations;
 import backend.academy.model.math.variations.SimpleVariation;
 import backend.academy.model.plot.Point;
 
-public final class Cosine implements SimpleVariation {
+public class Cosine implements SimpleVariation {
     @Override
     public Point apply(Point point) {
         return new Point(

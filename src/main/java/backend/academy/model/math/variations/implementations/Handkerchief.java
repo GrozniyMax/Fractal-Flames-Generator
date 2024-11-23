@@ -4,8 +4,6 @@ import backend.academy.model.math.variations.SimpleVariation;
 import backend.academy.model.plot.Point;
 
 public class Handkerchief implements SimpleVariation {
-    // Number 6
-
     @Override
     public Point apply(Point point) {
         double r = SimpleVariation.calculateR(point);

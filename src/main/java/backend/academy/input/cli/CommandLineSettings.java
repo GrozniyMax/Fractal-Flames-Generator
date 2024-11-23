@@ -17,7 +17,7 @@ public class CommandLineSettings {
         converter = IntegerPairConverter.class,
         validateValueWith = ImageSizeValidator.class
     )
-    private Pair<Integer, Integer> imageSize = Pair.of(2000, 2000);
+    private Pair<Integer, Integer> imageSize = Pair.of(800, 800);
 
 
     @Parameter(
@@ -32,7 +32,7 @@ public class CommandLineSettings {
         description = "Number of iterations",
         defaultValueDescription = "100 000"
     )
-    private int iterations = 300_000_000;
+    private int iterations = 3_000_000;
 
     @Parameter(
         names = {"-j", "--json-hath"},
@@ -42,11 +42,4 @@ public class CommandLineSettings {
 
     @Parameter(names = {"-h", "--help"}, help = true, description = "Show help")
     private boolean help = false;
-
-    @Parameter(
-        names = {"--supress-output"},
-        description = "Supress output",
-        defaultValueDescription = "false"
-    )
-    private boolean supressOutput = false;
 }
