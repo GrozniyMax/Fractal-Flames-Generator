@@ -1,6 +1,6 @@
-package backend.academy.correction.stupidCorrection;
+package backend.academy.processing.correction.stupidCorrection;
 
-import backend.academy.correction.Corrector;
+import backend.academy.processing.correction.Corrector;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

@@ -1,9 +1,8 @@
-package backend.academy.correction.logarithmicGammaCorrection.realisations;
+package backend.academy.processing.correction.logarithmicGammaCorrection.colorBased;
 
-import backend.academy.correction.logarithmicGammaCorrection.AbstractLogarithmicGammaCorrection;
+import backend.academy.processing.correction.logarithmicGammaCorrection.AbstractLogarithmicGammaCorrection;
 import backend.academy.model.image.Image;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.concurrent.Callable;
@@ -13,6 +12,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.stream.IntStream;
 
+/**
+ * @deprecated первая версия многопоточного корректора
+ * @see ParallelStreamsBasedCorrection
+ */
 @Log4j2
 public class TreadPoolLogarithmicGammaCorrector extends AbstractLogarithmicGammaCorrection {
 
@@ -56,7 +59,7 @@ public class TreadPoolLogarithmicGammaCorrector extends AbstractLogarithmicGamma
             for (int i = 0; i < image.width(); i++) {
                 gammaFactor = Math.log(image.get(i, row).hitCount()) / maxHitLog;
                 gammaFactor = gammaFactor * gamma;
-                image.get(i, row).multiply(gammaFactor);
+                image.get(i, row).multiplyColor(gammaFactor);
             }
         }
     }

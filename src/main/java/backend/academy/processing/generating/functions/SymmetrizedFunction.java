@@ -1,14 +1,12 @@
-package backend.academy.generating.functions;
+package backend.academy.processing.generating.functions;
 
 import backend.academy.model.image.Image;
-import backend.academy.model.math.MathFucntion;
 import backend.academy.model.math.symmetry.Symmetry;
 import backend.academy.model.math.transformations.BasicTransformation;
 import backend.academy.model.plot.Plot;
 import backend.academy.model.plot.Point;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import java.awt.Color;
 
 public class SymmetrizedFunction extends Function{

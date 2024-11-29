@@ -1,14 +1,15 @@
-package backend.academy.correction.logarithmicGammaCorrection.realisations;
+package backend.academy.processing.correction.logarithmicGammaCorrection.colorBased;
 
-import backend.academy.correction.logarithmicGammaCorrection.AbstractLogarithmicGammaCorrection;
+import backend.academy.processing.correction.logarithmicGammaCorrection.AbstractLogarithmicGammaCorrection;
 import backend.academy.model.image.Image;
 import backend.academy.model.image.Pixel;
-import lombok.RequiredArgsConstructor;
-import java.awt.Color;
 
-public class LogarithmicGammaCorrector extends AbstractLogarithmicGammaCorrection {
+/**
+ *
+ */
+class SingleTreadCorrector extends AbstractLogarithmicGammaCorrection {
 
-    public LogarithmicGammaCorrector(double gamma) {
+    public SingleTreadCorrector(double gamma) {
         super(gamma);
     }
 
@@ -31,16 +32,8 @@ public class LogarithmicGammaCorrector extends AbstractLogarithmicGammaCorrectio
                     continue;
                 }
                 gammaFactor = Math.log10(current.hitCount())/maxLog;
-                image.get(j, i).setColor(new Color(
-                    (int) Math.min(current.getColor().getRed()*gammaFactor, 255),
-                    (int) Math.min(current.getColor().getGreen()*gammaFactor, 255),
-                    (int) Math.min(current.getColor().getBlue()*gammaFactor, 255)
-                ));
+                image.get(j, i).multiplyColor(gammaFactor);
             }
         }
-    }
-
-    private double calculateB(double current, double max) {
-        return current/max;
     }
 }

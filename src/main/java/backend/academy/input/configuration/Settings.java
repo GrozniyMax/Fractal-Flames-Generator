@@ -1,6 +1,6 @@
 package backend.academy.input.configuration;
 
-import backend.academy.generating.functions.Function;
+import backend.academy.processing.generating.functions.Function;
 import backend.academy.model.math.transformations.BasicTransformation;
 import backend.academy.model.math.transformations.inheritors.AffineTransformation;
 import backend.academy.model.math.transformations.inheritors.FullTransformation;

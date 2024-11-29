@@ -1,6 +1,6 @@
-package backend.academy.generating;
+package backend.academy.processing.generating;
 
-import backend.academy.generating.functions.Functions;
+import backend.academy.processing.generating.functions.Functions;
 import backend.academy.model.image.Image;
 import backend.academy.model.math.variations.Variations;
 import backend.academy.model.plot.Plot;
@@ -12,6 +12,8 @@ import java.io.PrintStream;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Generator {
+
+    protected static final int PREPARE_ITERATIONS = 20;
 
     protected final Functions functions;
     protected final Image image;

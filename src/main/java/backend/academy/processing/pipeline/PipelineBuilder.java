@@ -1,13 +1,12 @@
-package backend.academy.processing;
+package backend.academy.processing.pipeline;
 
-import backend.academy.correction.Corrector;
-import backend.academy.generating.GeneratorBuilder;
-import backend.academy.generating.functions.Functions;
+import backend.academy.processing.correction.Corrector;
+import backend.academy.processing.generating.GeneratorBuilder;
+import backend.academy.processing.generating.functions.Functions;
+import backend.academy.input.configuration.Modes;
 import backend.academy.model.math.variations.Variations;
 import backend.academy.input.cli.CommandLineSettings;
-import backend.academy.output.cli.ProgressBar;
 import backend.academy.output.image.ImageWriter;
-import backend.academy.output.image.MultiTreadImageWriter;
 import backend.academy.output.image.SingleTreadImageWriter;
 import backend.academy.input.configuration.PipelineObject;
 import backend.academy.input.configuration.Settings;
@@ -33,8 +32,14 @@ public class PipelineBuilder {
 
     private Path outputFile;
 
+    private Modes mode;
+
+    private ImageWriter.ImageMode imageMode;
+
     public PipelineBuilder fill(PipelineObject rawPipelineObject) {
         var completedPipelineObject = rawPipelineObject.complete();
+        this.imageMode = rawPipelineObject.imageMode();
+
         this.generatorBuilder
             .plotX(completedPipelineObject.plot().x())
             .plotY(completedPipelineObject.plot().y())
@@ -48,6 +53,7 @@ public class PipelineBuilder {
 
         this.correctors = completedPipelineObject.corrections();
         this.generatorBuilder.mode(completedPipelineObject.mode());
+        this.mode = completedPipelineObject.mode();
 
         return this;
     }
@@ -55,7 +61,7 @@ public class PipelineBuilder {
     public PipelineBuilder fill(Settings settings) {
         Functions functions = new Functions();
         settings.functions()
-            .forEach(f-> functions.add(f.toFunction()));
+            .forEach(f -> functions.add(f.toFunction()));
 
         if (Objects.nonNull(settings.activeVariations())) {
             functions.setVariationsForAll(Variations.get(settings.activeVariations()));
@@ -82,14 +88,41 @@ public class PipelineBuilder {
         return this;
     }
 
-    public Pipeline build() {
-        return new Pipeline(
-            generatorBuilder.build(),
-            this.correctors,
-            this.writer,
-            this.outputFile,
-            this.out
-        );
+    public AbstractPipeline build() {
+        switch (mode) {
+            case Modes.SINGLE_THREAD -> {
+                return new AsyncPipeline(
+                    generatorBuilder.build(),
+                    this.correctors,
+                    this.writer,
+                    this.outputFile,
+                    this.out,
+                    this.imageMode
+                );
+            }
+            case Modes.MULTI_THREAD -> {
+                return new Pipeline(
+                    generatorBuilder.build(),
+                    this.correctors,
+                    this.writer,
+                    this.outputFile,
+                    this.out,
+                    this.imageMode
+                );
+            }
+        }
+        throw new IllegalArgumentException("Unknown/Not stated mode");
     }
+
+//    public AbstractPipeline build() {
+//        return new Pipeline(
+//            generatorBuilder.build(),
+//            this.correctors,
+//            this.writer,
+//            this.outputFile,
+//            this.out,
+//            this.imageMode
+//        );
+//    }
 
 }

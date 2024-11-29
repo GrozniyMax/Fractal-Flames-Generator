@@ -1,56 +1,131 @@
 package backend.academy.model.image;
 
-import backend.academy.Main;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import org.checkerframework.common.value.qual.IntRange;
 import java.awt.Color;
-import java.awt.PageAttributes;
-import java.security.SecureRandom;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Log4j2
 public class Pixel {
 
-    // Поскольку пикселей будет много, то имеет смысл такого рода оптимизация.
-    // Это усложнит работу с пикселями
-    // но уменьшит потребление памяти
-    // на 3 байта на пиксель в сравнении с short
-    // на 9 байт на пиксель с сравнении с int
-    private int color;
+    // честный, чтобы хоть как то попытаться обеспечить правильный порядок
+    private final ReadWriteLock mainLock = new ReentrantReadWriteLock(true);
+
+    private int r;
+    private int g;
+    private int b;
+    private int alpha;
 
     @Getter
     private int hitCount = 0;
 
     public Pixel(Color color) {
-        this.color = color.getRGB();
+        r = color.getRed();
+        g = color.getGreen();
+        b = color.getBlue();
+        alpha = color.getAlpha();
     }
 
-    public Color getColor() {
-        return new Color(color);
+    public Color asRGB() {
+        return new Color(bound(r), bound(g), bound(b));
+    }
+
+    public Color asARGB() {
+        return new Color(bound(r), bound(g), bound(b), bound(alpha));
     }
 
     public void hit(Color color) {
-        hitCount++;
-        if (hitCount == 1) {
-            setColor(color);
-            return;
+        mainLock.writeLock().lock();
+        mainLock.readLock().lock();
+        try {
+            hitCount++;
+            if (hitCount == 1) {
+                setColor(color);
+                return;
+            }
+            mixColor(color);
+        } finally {
+            mainLock.writeLock().unlock();
+            mainLock.readLock().unlock();
         }
-        mixColor(color);
+
     }
 
     private void mixColor(Color color) {
-        this.color = (this.color + color.getRGB()) /2;
+        this.r = (this.r + color.getRed()) / 2;
+        this.g = (this.g + color.getGreen()) / 2;
+        this.b = (this.b + color.getBlue()) / 2;
+        this.alpha = (alpha + color.getAlpha()) / 2;
     }
 
     public void setColor(Color color) {
-        this.color = color.getRGB();
+        mainLock.writeLock().lock();
+        mainLock.readLock().lock();
+        try {
+            this.r = color.getRed();
+            this.b = color.getBlue();
+            this.g = color.getGreen();
+            this.alpha = color.getAlpha();
+        } finally {
+            mainLock.writeLock().unlock();
+            mainLock.readLock().unlock();
+        }
+    }
+
+    public void multiplyColor(double value) {
+        mainLock.writeLock().lock();
+        mainLock.readLock().lock();
+        try {
+            this.r = (int) (r * value);
+            this.g = (int) (g * value);
+            this.b = (int) (b * value);
+        } finally {
+            mainLock.writeLock().unlock();
+            mainLock.readLock().unlock();
+        }
+    }
+
+    public void multiplyAlpha(double value) {
+        mainLock.writeLock().lock();
+        mainLock.readLock().lock();
+        try {
+            alpha = (int) (alpha * value);
+        } finally {
+            mainLock.writeLock().unlock();
+            mainLock.readLock().unlock();
+        }
+    }
+
+    /**
+     * Переводит число из диапазона 0-1 в диапазон 0-255 и ставит его вместо
+     * @param value
+     */
+    public void setAlpha(double value) {
+        this.alpha = (int) (value * 255);
+    }
+
+    public void multiplyAll(double value) {
+        mainLock.writeLock().lock();
+        mainLock.readLock().lock();
+        try {
+            multiplyAlpha(value);
+            multiplyColor(value);
+        } finally {
+            mainLock.writeLock().unlock();
+            mainLock.readLock().unlock();
+        }
     }
 
     public static Pixel empty() {
         return new Pixel(Color.BLACK);
     }
 
-    public void multiply(double value) {
-        this.color = (int) (color*value);
+    private static int bound(int value) {
+        return Math.min(Math.max(0, value), 255);
+
     }
 
 }

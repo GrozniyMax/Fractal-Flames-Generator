@@ -1,11 +1,12 @@
-package backend.academy.generating.functions;
+package backend.academy.processing.generating.functions;
 
 import backend.academy.model.math.MathFucntion;
 import backend.academy.model.math.symmetry.Symmetry;
 import backend.academy.model.math.variations.Variations;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Functions {
 
@@ -17,7 +18,7 @@ public class Functions {
     }
 
     public Function getRandom(){
-        SecureRandom r = new SecureRandom();
+        Random r = ThreadLocalRandom.current();
         return functions.get(r.nextInt(functions.size()));
     }
 

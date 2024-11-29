@@ -1,7 +1,7 @@
 package backend.academy;
 
 import backend.academy.input.cli.CommandLineSettings;
-import backend.academy.processing.PipelineBuilder;
+import backend.academy.processing.pipeline.PipelineBuilder;
 import backend.academy.input.configuration.Settings;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
@@ -9,7 +9,6 @@ import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.experimental.UtilityClass;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.core.config.Configurator;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;

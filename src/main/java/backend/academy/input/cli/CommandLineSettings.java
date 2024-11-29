@@ -32,7 +32,7 @@ public class CommandLineSettings {
         description = "Number of iterations",
         defaultValueDescription = "100 000"
     )
-    private int iterations = 3_000_000;
+    private int iterations = 30_000_000;
 
     @Parameter(
         names = {"-j", "--json-hath"},

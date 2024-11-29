@@ -1,4 +1,4 @@
-package backend.academy.generating.functions;
+package backend.academy.processing.generating.functions;
 
 import backend.academy.model.image.Image;
 import backend.academy.model.math.MathFucntion;

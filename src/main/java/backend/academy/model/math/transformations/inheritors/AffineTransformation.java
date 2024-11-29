@@ -6,6 +6,8 @@ import backend.academy.input.configuration.deserializers.AffineTransformationDes
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.security.SecureRandom;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @JsonDeserialize(using = AffineTransformationDeserialization.class)
 public class AffineTransformation extends BasicTransformation {
@@ -36,7 +38,7 @@ public class AffineTransformation extends BasicTransformation {
     }
 
     public static AffineTransformation random() {
-        SecureRandom random = new SecureRandom();
+        Random random = ThreadLocalRandom.current();
         double a = random.nextDouble(-1, 1);
         double b = random.nextDouble(-1, 1);
         double c = random.nextDouble(-1, 1);

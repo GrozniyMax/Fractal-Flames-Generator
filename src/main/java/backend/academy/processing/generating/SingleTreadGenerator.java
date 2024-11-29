@@ -1,7 +1,7 @@
-package backend.academy.generating;
+package backend.academy.processing.generating;
 
-import backend.academy.generating.functions.Function;
-import backend.academy.generating.functions.Functions;
+import backend.academy.processing.generating.functions.Function;
+import backend.academy.processing.generating.functions.Functions;
 import backend.academy.model.image.Image;
 import backend.academy.model.plot.Plot;
 import backend.academy.model.plot.Point;

@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ColorDeserializer extends JsonDeserializer<Color> {
     @Override
@@ -18,7 +19,7 @@ public class ColorDeserializer extends JsonDeserializer<Color> {
 
         JsonNode node = p.getCodec().readTree(p);
         if (node.isTextual() && node.asText().strip().equalsIgnoreCase("random")) {
-            SecureRandom r = new SecureRandom();
+            Random r = ThreadLocalRandom.current();
             return ColorUtils.getRandomRGB();
         } else if (node.isObject()) {
             return new Color(node.get("r").asInt(), node.get("g").asInt(), node.get("b").asInt());

@@ -8,7 +8,9 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.Getter;
@@ -49,7 +51,7 @@ public class Variations {
     private final int size;
 
     public SimpleVariation getRandom() {
-        SecureRandom random = new SecureRandom();
+        Random random = ThreadLocalRandom.current();
         return variations.get(random.nextInt(0, size)).right();
     }
 

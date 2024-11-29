@@ -1,10 +1,9 @@
-package backend.academy.generating;
+package backend.academy.processing.generating;
 
-import backend.academy.generating.functions.Functions;
+import backend.academy.processing.generating.functions.Functions;
 import backend.academy.model.image.Image;
 import backend.academy.model.math.variations.Variations;
 import backend.academy.model.plot.Plot;
-import backend.academy.output.cli.ProgressBar;
 import backend.academy.input.configuration.Modes;
 import java.io.PrintStream;
 
@@ -90,11 +89,12 @@ public class GeneratorBuilder {
                 return new SingleTreadGenerator(functions, image, plot, iterations, out);
             }
             case MULTI_THREAD -> {
-                return new TreadPoolGenerator(functions, image, plot, iterations, out);
+                return new YetAnotherThreadPoolGenerator(functions, image, plot, iterations, out);
             }
             case null, default -> {
                 return new SingleTreadGenerator(functions, image, plot, iterations, out);
             }
         }
     }
+
 }

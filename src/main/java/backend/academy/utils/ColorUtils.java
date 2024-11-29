@@ -3,10 +3,13 @@ package backend.academy.utils;
 import lombok.experimental.UtilityClass;
 import java.awt.Color;
 import java.security.SecureRandom;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @UtilityClass
 public class ColorUtils {
-    private static final SecureRandom RANDOM = new SecureRandom();
+    private static final Random RANDOM = ThreadLocalRandom.current();
+
 
     public Color getRandomRGB() {
         return new Color(
