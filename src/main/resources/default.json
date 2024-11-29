@@ -29,7 +29,7 @@
         }
     ],
     "pipeline": {
-        "mode": "SINGLE_THREAD",
+        "mode": "OPTIMAL",
         "plot": "default",
         "image-mode": "ARGB",
         "post-transformations": [
@@ -49,5 +49,10 @@
             }
 
         ]
+    },
+    "tread-counts": {
+        "generator": 10,
+        "pipeline": 5,
+        "image-writer": 3
     }
 }

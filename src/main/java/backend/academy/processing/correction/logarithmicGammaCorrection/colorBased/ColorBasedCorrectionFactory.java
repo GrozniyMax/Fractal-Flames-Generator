@@ -11,7 +11,7 @@ public class ColorBasedCorrectionFactory implements CorrectionTypeFactory {
             case SINGLE_THREAD -> {
                 return new SingleTreadCorrector(gamma);
             }
-            case MULTI_THREAD -> {
+            case MULTI_THREAD, OPTIMAL -> {
                 return new ParallelStreamsBasedCorrection(gamma);
             }
             case null, default ->{

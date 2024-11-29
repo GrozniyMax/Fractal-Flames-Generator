@@ -1,5 +1,7 @@
 package backend.academy.processing.pipeline;
 
+import backend.academy.input.configuration.ThreadCounts;
+import backend.academy.output.image.MultiTreadImageWriter;
 import backend.academy.processing.correction.Corrector;
 import backend.academy.processing.generating.GeneratorBuilder;
 import backend.academy.processing.generating.functions.Functions;
@@ -36,6 +38,8 @@ public class PipelineBuilder {
 
     private ImageWriter.ImageMode imageMode;
 
+    private ThreadCounts threadCounts;
+
     public PipelineBuilder fill(PipelineObject rawPipelineObject) {
         var completedPipelineObject = rawPipelineObject.complete();
         this.imageMode = rawPipelineObject.imageMode();
@@ -47,12 +51,18 @@ public class PipelineBuilder {
             .plotHeight(completedPipelineObject.plot().height());
 
         switch (completedPipelineObject.mode()) {
-            case MULTI_THREAD -> writer = new SingleTreadImageWriter();
-            case SINGLE_THREAD -> writer = new SingleTreadImageWriter();
+            case MULTI_THREAD, OPTIMAL -> {
+                writer = new MultiTreadImageWriter(threadCounts.imageWriter());
+                this.generatorBuilder.mode(Modes.MULTI_THREAD);
+            }
+            case SINGLE_THREAD -> {
+                this.generatorBuilder.mode(Modes.SINGLE_THREAD);
+                writer = new SingleTreadImageWriter();
+            }
         }
 
         this.correctors = completedPipelineObject.corrections();
-        this.generatorBuilder.mode(completedPipelineObject.mode());
+//        this.generatorBuilder.mode(completedPipelineObject.mode());
         this.mode = completedPipelineObject.mode();
 
         return this;
@@ -67,8 +77,9 @@ public class PipelineBuilder {
             functions.setVariationsForAll(Variations.get(settings.activeVariations()));
         }
         this.generatorBuilder.functions(functions);
-        fill(settings.pipeline());
-        return this;
+        this.threadCounts = settings.threadCounts();
+        this.generatorBuilder.threadCounts(threadCounts.generator());
+        return fill(settings.pipeline());
     }
 
     public PipelineBuilder fill(CommandLineSettings settings) {
@@ -97,10 +108,11 @@ public class PipelineBuilder {
                     this.writer,
                     this.outputFile,
                     this.out,
-                    this.imageMode
+                    this.imageMode,
+                    this.threadCounts.pipeline()
                 );
             }
-            case Modes.SINGLE_THREAD -> {
+            case Modes.SINGLE_THREAD, OPTIMAL -> {
                 return new Pipeline(
                     generatorBuilder.build(),
                     this.correctors,

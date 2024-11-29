@@ -33,6 +33,9 @@ public class Settings {
     @JsonProperty("pipeline")
     private PipelineObject pipeline;
 
+    @JsonProperty("tread-counts")
+    private ThreadCounts threadCounts;
+
     /**
      * Класс для отделения аннотаций для парсинга от функций
      */

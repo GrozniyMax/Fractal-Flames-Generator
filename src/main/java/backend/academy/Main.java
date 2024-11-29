@@ -57,6 +57,7 @@ public class Main {
             );
         } catch (IllegalArgumentException | JacksonException e) {
             System.out.println("Invalid json structure due to: " + e.getMessage());
+            log.debug(e);
             return;
         }
 

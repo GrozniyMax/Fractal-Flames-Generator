@@ -16,7 +16,12 @@ import java.util.concurrent.Future;
 
 @Log4j2 public class MultiTreadImageWriter implements ImageWriter {
 
-    private ExecutorService executor = Executors.newFixedThreadPool(10);
+    private ExecutorService executor;
+
+    public MultiTreadImageWriter(int treadCount) {
+        executor = Executors.newFixedThreadPool(treadCount);
+        log.debug("Thread-count: {}",treadCount);
+    }
 
     /**
      * Задача реализующая копирование строки изображения.

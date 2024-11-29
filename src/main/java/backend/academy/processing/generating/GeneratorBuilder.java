@@ -25,6 +25,7 @@ public class GeneratorBuilder {
     private PrintStream out;
 
     private Modes mode;
+    private int threadsCount;
 
     public GeneratorBuilder imageWidth(Integer imageWidth) {
         this.imageWidth = imageWidth;
@@ -81,6 +82,11 @@ public class GeneratorBuilder {
         return this;
     }
 
+    public GeneratorBuilder threadCounts(int threadsCount) {
+        this.threadsCount = threadsCount;
+        return this;
+    }
+
     public Generator build() {
         Image image = new Image(imageWidth, imageHeight);
         Plot plot = new Plot(plotX, plotY, plotWidth, plotHeight);
@@ -89,7 +95,7 @@ public class GeneratorBuilder {
                 return new SingleTreadGenerator(functions, image, plot, iterations, out);
             }
             case MULTI_THREAD -> {
-                return new YetAnotherThreadPoolGenerator(functions, image, plot, iterations, out);
+                return new YetAnotherThreadPoolGenerator(functions, image, plot, iterations, out, threadsCount);
             }
             case null, default -> {
                 return new SingleTreadGenerator(functions, image, plot, iterations, out);

@@ -11,7 +11,7 @@ public class AlphaBasedCorrectionFactory implements CorrectionTypeFactory {
             case SINGLE_THREAD -> {
                 return new SingleTreadCorrection(gamma);
             }
-            case MULTI_THREAD -> {
+            case MULTI_THREAD, OPTIMAL -> {
                 return new ParallelStreamBasedCorrection(gamma);
             }
             case null, default ->{

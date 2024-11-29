@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 @Log4j2
 public class AsyncPipeline extends AbstractPipeline {
 
-    private final ExecutorService executor = Executors.newFixedThreadPool(10);
+    private final ExecutorService executor;
 
     public AsyncPipeline(
         Generator generator,
@@ -25,16 +25,21 @@ public class AsyncPipeline extends AbstractPipeline {
         ImageWriter imageWriter,
         Path pathToWrite,
         PrintStream out,
-        ImageWriter.ImageMode imageMode
+        ImageWriter.ImageMode imageMode,
+        int threadCount
     ) {
         super(generator, correctors, imageWriter, pathToWrite, out, imageMode);
+        executor = Executors.newFixedThreadPool(threadCount);
+        log.debug("Pipeline number: {}", threadCount);
     }
 
     @Override
     public void run() {
 
-        log.debug("Processing using generator: {}, ImageWriter: {}", generator.getClass().getSimpleName(),
-            imageWriter.getClass().getSimpleName());
+        log.debug("Processing using generator: {}, ImageWriter: {}, correctors, {}",
+            generator.getClass().getSimpleName(),
+            imageWriter.getClass().getSimpleName(),
+            correctors.stream().map(Object::getClass).map(Class::getSimpleName).toList());
         out.println("Started generation ...");
         CompletableFuture<Image> currentTast = CompletableFuture.supplyAsync(generator::generate, executor);
         for (Corrector corrector : correctors) {

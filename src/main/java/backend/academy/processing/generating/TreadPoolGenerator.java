@@ -23,7 +23,7 @@ public class TreadPoolGenerator extends Generator {
     // -1 так, чтобы мало ли не сломалось
     public static final int MAX_SUBMITTED_TASK = Integer.MAX_VALUE - 1;
 
-    private final ExecutorService executor = Executors.newFixedThreadPool(10);
+    private final ExecutorService executor;
 
     private AtomicInteger tasksInProgress = new AtomicInteger(0);
 
@@ -42,8 +42,10 @@ public class TreadPoolGenerator extends Generator {
     }
 
     @Builder
-    public TreadPoolGenerator(Functions functions, Image image, Plot plot, int iterations, PrintStream out) {
+    public TreadPoolGenerator(Functions functions, Image image, Plot plot, int iterations, PrintStream out, int threadCount) {
         super(functions, image, plot, iterations, out);
+         executor = Executors.newFixedThreadPool(threadCount);
+         log.debug("Thread-count: {}", threadCount);
     }
 
     @Override

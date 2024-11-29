@@ -19,7 +19,8 @@ import java.util.concurrent.Executors;
 public class YetAnotherThreadPoolGenerator extends Generator {
 
     private final int SAMPLES = 100;
-    private final ExecutorService executor = Executors.newFixedThreadPool(10);
+
+    private ExecutorService executor;
 
     private final int ITERATIONS_PER_SAMPLE = this.iterations/SAMPLES + 1;
 
@@ -28,9 +29,12 @@ public class YetAnotherThreadPoolGenerator extends Generator {
         Image image,
         Plot plot,
         int iterations,
-        PrintStream out
+        PrintStream out,
+        int threadsCount
     ) {
         super(functions, image, plot, iterations, out);
+        executor= Executors.newFixedThreadPool(threadsCount);
+        log.debug("Thread-count: {}", threadsCount);
     }
 
     @AllArgsConstructor
