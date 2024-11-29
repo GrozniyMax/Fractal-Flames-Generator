@@ -47,6 +47,6 @@ import java.util.concurrent.Future;
 
         executor.close();
 
-        ImageIO.write(image, getFileFormat(fileToWrite), fileToWrite.toFile());
+        ImageIO.write(addBackground(image), getFileFormat(fileToWrite), fileToWrite.toFile());
     }
 }

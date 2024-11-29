@@ -16,9 +16,11 @@ public class SingleTreadImageWriter implements ImageWriter {
 
         for (int i = 0; i < imageToWrite.height(); i++) {
             for (int j = 0; j < imageToWrite.width(); j++) {
-                image.setRGB(j, i, imageToWrite.get(j, i).asARGB().getRGB());
+                image.setRGB(j, i, mode.getColor(imageToWrite.get(j, i)).getRGB());
             }
         }
+
+        image = addBackground(image);
 
         ImageIO.write(image, getFileFormat(fileToWrite), fileToWrite.toFile());
     }

@@ -10,6 +10,7 @@ import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -32,15 +33,19 @@ public class AsyncPipeline extends AbstractPipeline {
     @Override
     public void run() {
 
-        log.info("Processing using generator: {}, ImageWriter: {}", generator.getClass().getSimpleName(),
+        log.debug("Processing using generator: {}, ImageWriter: {}", generator.getClass().getSimpleName(),
             imageWriter.getClass().getSimpleName());
         out.println("Started generation ...");
         CompletableFuture<Image> currentTast = CompletableFuture.supplyAsync(generator::generate, executor);
         for (Corrector corrector : correctors) {
             currentTast = currentTast.thenApplyAsync(corrector, executor);
         }
-        currentTast.thenAcceptAsync(image -> wrapIoException(image, pathToWrite, imageMode), executor);
-        executor.close();
+        try {
+            currentTast.thenAcceptAsync(image -> wrapIoException(image, pathToWrite, imageMode), executor).get();
+            executor.close();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new GeneratingError(e);
+        }
     }
 
     private void wrapIoException(Image image, Path pathToWrite, ImageWriter.ImageMode mode) {

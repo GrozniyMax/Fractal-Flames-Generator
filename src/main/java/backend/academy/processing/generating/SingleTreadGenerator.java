@@ -12,8 +12,6 @@ import java.io.PrintStream;
 @Log4j2
 public class SingleTreadGenerator extends Generator{
 
-    private static final int SKIPPED_ITERATIONS = 20;
-
     protected SingleTreadGenerator(Functions functions, Image image, Plot plot, int iterations, PrintStream out) {
         super(functions, image, plot, iterations, out);
     }
@@ -26,7 +24,8 @@ public class SingleTreadGenerator extends Generator{
         out.println("Generating out image ...");
         for (int i = 0; i < iterations; i++) {
             functionToApply = functions.getRandom();
-            point = functionToApply.acceptAndPutToImage(point, plot, image);
+            point = functionToApply.accept(point);
+            functionToApply.put(point, plot, image);
             bar.update(i);
         }
         return image;
@@ -36,11 +35,11 @@ public class SingleTreadGenerator extends Generator{
         log.debug("Generating first points");
         Function functionToApply;
         Point point = plot.getRandomPoint();
-        ProgressBar bar = ProgressBar.createWithDefaultLength(SKIPPED_ITERATIONS, out, 1);
+        ProgressBar bar = ProgressBar.createWithDefaultLength(PREPARE_ITERATIONS, out, 1);
         log.debug("Starting from {}", point);
 
         out.println("Preparing ...");
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < PREPARE_ITERATIONS; i++) {
             functionToApply = functions.getRandom();
             point = functionToApply.accept(point);
             bar.update(i);

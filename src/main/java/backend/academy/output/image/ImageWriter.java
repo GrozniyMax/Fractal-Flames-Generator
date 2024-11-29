@@ -12,9 +12,11 @@ import java.util.function.Function;
 
 public interface ImageWriter {
 
+    public static final Color backgroundColor = Color.BLACK;
+
     @RequiredArgsConstructor
     public enum ImageMode {
-        RGB(BufferedImage.TYPE_INT_ARGB, Pixel::asRGB),
+        RGB(BufferedImage.TYPE_INT_RGB, Pixel::asRGB),
         ARGB(BufferedImage.TYPE_INT_ARGB, Pixel::asARGB);
 
         @Getter
@@ -24,6 +26,10 @@ public interface ImageWriter {
 
         public Color getColor(Pixel pixel) {
             return this.mapper.apply(pixel);
+        }
+
+        public int getColorInt(Pixel pixel) {
+            return getColor(pixel).getRGB();
         }
     }
 
@@ -36,6 +42,13 @@ public interface ImageWriter {
             return fileName.substring(dotIndex + 1);
         }
         return "";
+    }
+
+    default BufferedImage addBackground(BufferedImage src) {
+        BufferedImage result = new BufferedImage(src.getWidth(), src.getHeight(), src.getType());
+        result.getGraphics().clearRect(0, 0, result.getWidth(), result.getHeight());
+        result.getGraphics().drawImage(src, 0, 0, null);
+        return result;
     }
 
 }

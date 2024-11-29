@@ -29,7 +29,7 @@
         }
     ],
     "pipeline": {
-        "mode": "MULTI_THREAD",
+        "mode": "SINGLE_THREAD",
         "plot": "default",
         "image-mode": "ARGB",
         "post-transformations": [
@@ -38,19 +38,14 @@
 
         "correction": [
             {
-                "type": "stupid",
-                "hits-count": 5
+                "type": "logarithmic",
+                "correction-base": "color-based",
+                "gamma": 0.7
             },
             {
                 "type": "logarithmic",
                 "correction-base": "alpha-based",
-                "gamma": 1.2
-            },
-
-            {
-                "type": "logarithmic",
-                "correction-base": "color-based",
-                "gamma": 1.2
+                "gamma": 0.2
             }
 
         ]

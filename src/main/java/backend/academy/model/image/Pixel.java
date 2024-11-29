@@ -17,7 +17,7 @@ public class Pixel {
     private int r;
     private int g;
     private int b;
-    private int alpha;
+    private int alpha = 0;
 
     @Getter
     private int hitCount = 0;
@@ -58,50 +58,30 @@ public class Pixel {
         this.r = (this.r + color.getRed()) / 2;
         this.g = (this.g + color.getGreen()) / 2;
         this.b = (this.b + color.getBlue()) / 2;
-        this.alpha = (alpha + color.getAlpha()) / 2;
     }
 
     public void setColor(Color color) {
-        mainLock.writeLock().lock();
-        mainLock.readLock().lock();
-        try {
-            this.r = color.getRed();
-            this.b = color.getBlue();
-            this.g = color.getGreen();
-            this.alpha = color.getAlpha();
-        } finally {
-            mainLock.writeLock().unlock();
-            mainLock.readLock().unlock();
-        }
+
+        this.r = color.getRed();
+        this.b = color.getBlue();
+        this.g = color.getGreen();
+        this.alpha = color.getAlpha();
     }
 
     public void multiplyColor(double value) {
-        mainLock.writeLock().lock();
-        mainLock.readLock().lock();
-        try {
-            this.r = (int) (r * value);
-            this.g = (int) (g * value);
-            this.b = (int) (b * value);
-        } finally {
-            mainLock.writeLock().unlock();
-            mainLock.readLock().unlock();
-        }
+        this.r = (int) (r * value);
+        this.g = (int) (g * value);
+        this.b = (int) (b * value);
     }
 
     public void multiplyAlpha(double value) {
-        mainLock.writeLock().lock();
-        mainLock.readLock().lock();
-        try {
-            alpha = (int) (alpha * value);
-        } finally {
-            mainLock.writeLock().unlock();
-            mainLock.readLock().unlock();
-        }
+
+        alpha = (int) (alpha * value);
+
     }
 
     /**
      * Переводит число из диапазона 0-1 в диапазон 0-255 и ставит его вместо
-     * @param value
      */
     public void setAlpha(double value) {
         this.alpha = (int) (value * 255);

@@ -90,7 +90,7 @@ public class PipelineBuilder {
 
     public AbstractPipeline build() {
         switch (mode) {
-            case Modes.SINGLE_THREAD -> {
+            case Modes.MULTI_THREAD -> {
                 return new AsyncPipeline(
                     generatorBuilder.build(),
                     this.correctors,
@@ -100,7 +100,7 @@ public class PipelineBuilder {
                     this.imageMode
                 );
             }
-            case Modes.MULTI_THREAD -> {
+            case Modes.SINGLE_THREAD -> {
                 return new Pipeline(
                     generatorBuilder.build(),
                     this.correctors,
