@@ -1,21 +1,21 @@
 package backend.academy.utils;
 
-import lombok.experimental.UtilityClass;
 import java.awt.Color;
-import java.security.SecureRandom;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ColorUtils {
     private static final Random RANDOM = ThreadLocalRandom.current();
-
+    private static final int MIN_VALUE = 0;
+    private static final int MAX_VALUE = 255;
 
     public Color getRandomRGB() {
         return new Color(
-            RANDOM.nextInt(0, 255),
-            RANDOM.nextInt(0, 255),
-            RANDOM.nextInt(0, 255)
-            );
+            RANDOM.nextInt(MIN_VALUE, MAX_VALUE),
+            RANDOM.nextInt(MIN_VALUE, MAX_VALUE),
+            RANDOM.nextInt(MIN_VALUE, MAX_VALUE)
+        );
     }
 }

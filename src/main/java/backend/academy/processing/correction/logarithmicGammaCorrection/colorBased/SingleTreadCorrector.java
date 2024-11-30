@@ -1,15 +1,12 @@
 package backend.academy.processing.correction.logarithmicGammaCorrection.colorBased;
 
-import backend.academy.processing.correction.logarithmicGammaCorrection.AbstractLogarithmicGammaCorrection;
 import backend.academy.model.image.Image;
 import backend.academy.model.image.Pixel;
+import backend.academy.processing.correction.logarithmicGammaCorrection.AbstractLogarithmicGammaCorrection;
 
-/**
- *
- */
 class SingleTreadCorrector extends AbstractLogarithmicGammaCorrection {
 
-    public SingleTreadCorrector(double gamma) {
+    SingleTreadCorrector(double gamma) {
         super(gamma);
     }
 
@@ -31,7 +28,7 @@ class SingleTreadCorrector extends AbstractLogarithmicGammaCorrection {
                 if (current.hitCount() == 0) {
                     continue;
                 }
-                gammaFactor = Math.log10(current.hitCount())/maxLog;
+                gammaFactor = Math.log10(current.hitCount()) / maxLog;
                 image.get(j, i).multiplyColor(gammaFactor);
             }
         }

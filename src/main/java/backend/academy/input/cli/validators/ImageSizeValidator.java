@@ -4,6 +4,9 @@ import com.beust.jcommander.IValueValidator;
 import com.beust.jcommander.ParameterException;
 import it.unimi.dsi.fastutil.Pair;
 
+/**
+ * Валидатор для размеров изображения
+ */
 public class ImageSizeValidator implements IValueValidator<Pair<Integer, Integer>> {
     @Override
     public void validate(String name, Pair<Integer, Integer> value) throws ParameterException {

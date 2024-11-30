@@ -1,7 +1,7 @@
 package backend.academy.processing.generating.functions;
 
 import backend.academy.model.image.Image;
-import backend.academy.model.math.MathFucntion;
+import backend.academy.model.math.MathFunction;
 import backend.academy.model.math.transformations.BasicTransformation;
 import backend.academy.model.math.variations.Variations;
 import backend.academy.model.plot.Plot;
@@ -52,7 +52,7 @@ public class Function {
         return (int) (((y - plot.y()) / plot.height()) * (image.height()));
     }
 
-    public void andThen(MathFucntion function) {
+    public void andThen(MathFunction function) {
         transformation = transformation.andThen(function);
     }
 

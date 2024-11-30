@@ -4,10 +4,11 @@ import backend.academy.input.cli.converters.IntegerPairConverter;
 import backend.academy.input.cli.validators.ImageSizeValidator;
 import com.beust.jcommander.Parameter;
 import it.unimi.dsi.fastutil.Pair;
-import lombok.Getter;
 import java.nio.file.Path;
+import lombok.Getter;
 
 @Getter
+@SuppressWarnings("checkstyle:MagicNumber")
 public class CommandLineSettings {
 
     @Parameter(
@@ -18,7 +19,6 @@ public class CommandLineSettings {
         validateValueWith = ImageSizeValidator.class
     )
     private Pair<Integer, Integer> imageSize = Pair.of(800, 800);
-
 
     @Parameter(
         names = {"-o", "--output"},
@@ -32,7 +32,7 @@ public class CommandLineSettings {
         description = "Number of iterations",
         defaultValueDescription = "100 000"
     )
-    private int iterations = 100_000_000;
+    private int iterations = 3_000_000;
 
     @Parameter(
         names = {"-j", "--json-hath"},
@@ -48,4 +48,11 @@ public class CommandLineSettings {
         description = "Whether to suppress output"
     )
     private boolean suppress = false;
+
+    @Parameter(
+        names = {"--debug"},
+        description = "Whetver to enable debug or not",
+        defaultValueDescription = "Debug is disabled by default"
+    )
+    private boolean debug = false;
 }

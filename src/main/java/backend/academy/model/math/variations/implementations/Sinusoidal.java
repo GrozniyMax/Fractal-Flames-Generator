@@ -1,7 +1,7 @@
 package backend.academy.model.math.variations.implementations;
 
-import backend.academy.model.plot.Point;
 import backend.academy.model.math.variations.SimpleVariation;
+import backend.academy.model.plot.Point;
 
 public class Sinusoidal implements SimpleVariation {
     @Override

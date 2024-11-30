@@ -2,20 +2,20 @@ package backend.academy.output.image;
 
 import backend.academy.model.image.Image;
 import backend.academy.model.image.Pixel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.function.Function;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 public interface ImageWriter {
 
-    public static final Color backgroundColor = Color.BLACK;
+    Color BACKGROUND_COLOR = Color.BLACK;
 
     @RequiredArgsConstructor
-    public enum ImageMode {
+    enum ImageMode {
         RGB(BufferedImage.TYPE_INT_RGB, Pixel::asRGB),
         ARGB(BufferedImage.TYPE_INT_ARGB, Pixel::asARGB);
 
@@ -46,7 +46,8 @@ public interface ImageWriter {
 
     default BufferedImage addBackground(BufferedImage src) {
         BufferedImage result = new BufferedImage(src.getWidth(), src.getHeight(), src.getType());
-        result.getGraphics().clearRect(0, 0, result.getWidth(), result.getHeight());
+        result.getGraphics().setColor(BACKGROUND_COLOR);
+        result.getGraphics().fillRect(0, 0, result.getWidth(), result.getHeight());
         result.getGraphics().drawImage(src, 0, 0, null);
         return result;
     }

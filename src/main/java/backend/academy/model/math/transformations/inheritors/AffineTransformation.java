@@ -1,14 +1,15 @@
 package backend.academy.model.math.transformations.inheritors;
 
+import backend.academy.input.configuration.deserializers.AffineTransformationDeserialization;
 import backend.academy.model.math.transformations.BasicTransformation;
 import backend.academy.model.plot.Point;
-import backend.academy.input.configuration.deserializers.AffineTransformationDeserialization;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import java.security.SecureRandom;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Аффинное(линейное) преобразование
+ */
 @JsonDeserialize(using = AffineTransformationDeserialization.class)
 public class AffineTransformation extends BasicTransformation {
 
@@ -38,29 +39,39 @@ public class AffineTransformation extends BasicTransformation {
     }
 
     public static AffineTransformation random() {
-        Random random = ThreadLocalRandom.current();
-        double a = random.nextDouble(-1, 1);
-        double b = random.nextDouble(-1, 1);
-        double c = random.nextDouble(-1, 1);
-        double d = random.nextDouble(-1, 1);
-        double e = random.nextDouble(-1, 1);
-        double f = random.nextDouble(-0.5, 0.5);
-        AffineTransformation result = new AffineTransformation(a, b, c, d, e, f);
+        AffineTransformation result = randomAffine();
         while (!result.correct()) {
-            a = random.nextDouble(-1, 1);
-            b = random.nextDouble(-1, 1);
-            c = random.nextDouble(-1, 1);
-            d = random.nextDouble(-1, 1);
-            e = random.nextDouble(-1, 1);
-            f = random.nextDouble(-1, 1);
-            result = new AffineTransformation(a, b, c, d, e, f);
+            result = randomAffine();
         }
         return result;
     }
 
+    private static AffineTransformation randomAffine() {
+        final double MIN_VALUE_FOR_MATRIX_COEFFICIENTS = -1;
+        final double MAX_VALUE_FOR_MATRIX_COEFFICIENTS = 1;
+
+        final double MIN_VALUE_FOR_ADDITIONAL_COEFFICIENTS = -0.5;
+        final double MAX_VALUE_FOR_ADDITIONAL_COEFFICIENTS = 0.5;
+
+        double a;
+        double b;
+        double c;
+        double d;
+        double e;
+        double f;
+        Random random = ThreadLocalRandom.current();
+        a = random.nextDouble(MIN_VALUE_FOR_MATRIX_COEFFICIENTS, MAX_VALUE_FOR_MATRIX_COEFFICIENTS);
+        b = random.nextDouble(MIN_VALUE_FOR_MATRIX_COEFFICIENTS, MAX_VALUE_FOR_MATRIX_COEFFICIENTS);
+        c = random.nextDouble(MIN_VALUE_FOR_MATRIX_COEFFICIENTS, MAX_VALUE_FOR_MATRIX_COEFFICIENTS);
+        d = random.nextDouble(MIN_VALUE_FOR_MATRIX_COEFFICIENTS, MAX_VALUE_FOR_MATRIX_COEFFICIENTS);
+        e = random.nextDouble(MIN_VALUE_FOR_ADDITIONAL_COEFFICIENTS, MAX_VALUE_FOR_ADDITIONAL_COEFFICIENTS);
+        f = random.nextDouble(MIN_VALUE_FOR_ADDITIONAL_COEFFICIENTS, MAX_VALUE_FOR_ADDITIONAL_COEFFICIENTS);
+        return new AffineTransformation(a, b, c, d, e, f);
+    }
+
     private boolean correct() {
-        return (a*a + d*d < 1)
-            && (b*b + e*e < 1)
-            && (a*a+b*b+d*d+e*e < 1 - (a*e - b*d)*(a*e - b*d));
+        return (a * a + d * d < 1)
+            && (b * b + e * e < 1)
+            && (a * a + b * b + d * d + e * e < 1 - (a * e - b * d) * (a * e - b * d));
     }
 }

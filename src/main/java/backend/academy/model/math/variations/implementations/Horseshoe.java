@@ -9,6 +9,6 @@ public class Horseshoe implements SimpleVariation {
         double r = SimpleVariation.calculateR(point);
         return new Point(point.x() * point.x() - point.y() * point.y(),
             2 * point.x() * point.y()
-        ).multiply(1/r);
+        ).multiply(1 / r);
     }
 }

@@ -1,17 +1,16 @@
 package backend.academy.model.math.transformations.inheritors;
 
-import backend.academy.model.math.Composition;
-import backend.academy.model.math.MathFucntion;
+import backend.academy.model.math.MathFunction;
 import backend.academy.model.math.transformations.BasicTransformation;
 import backend.academy.model.plot.Point;
-import lombok.AllArgsConstructor;
-
 import java.util.concurrent.atomic.AtomicInteger;
 
-
+/**
+ * Взвешенная сумма всех вариаций.
+ */
 public class WeightedTransformation extends BasicTransformation {
 
-    private final MathFucntion affineTransformation;
+    private final MathFunction affineTransformation;
     private final double[] weights;
 
     public WeightedTransformation(AffineTransformation affineTransformation, double[] weights) {
@@ -37,6 +36,5 @@ public class WeightedTransformation extends BasicTransformation {
         }
         return weights[count];
     }
-
 
 }

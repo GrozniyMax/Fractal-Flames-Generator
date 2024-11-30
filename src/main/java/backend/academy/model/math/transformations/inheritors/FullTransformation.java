@@ -1,12 +1,11 @@
 package backend.academy.model.math.transformations.inheritors;
 
-import backend.academy.model.math.Composition;
-import backend.academy.model.math.MathFucntion;
 import backend.academy.model.math.transformations.BasicTransformation;
-import backend.academy.model.math.variations.Variations;
 import backend.academy.model.plot.Point;
-import lombok.RequiredArgsConstructor;
 
+/**
+ * Полное преобразование (взвешенная сумма с дополнительной аффинной пост-трансформацией)
+ */
 public class FullTransformation extends BasicTransformation {
 
     private final WeightedTransformation basin;

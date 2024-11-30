@@ -1,12 +1,12 @@
 package backend.academy.model.image;
 
 import backend.academy.Main;
-import lombok.Getter;
-import lombok.ToString;
-import lombok.extern.log4j.Log4j2;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.stream.Stream;
+import lombok.Getter;
+import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @ToString(exclude = "data")

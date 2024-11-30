@@ -7,6 +7,6 @@ public class Spherical implements SimpleVariation {
     @Override
     public Point apply(Point point) {
         double r = SimpleVariation.calculateR(point);
-        return point.multiply(1.0 / (r*r));
+        return point.multiply(1.0 / (r * r));
     }
 }

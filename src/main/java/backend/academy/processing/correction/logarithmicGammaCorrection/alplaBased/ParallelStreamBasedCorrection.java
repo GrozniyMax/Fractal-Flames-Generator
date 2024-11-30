@@ -1,8 +1,8 @@
 package backend.academy.processing.correction.logarithmicGammaCorrection.alplaBased;
 
-import backend.academy.processing.correction.logarithmicGammaCorrection.AbstractLogarithmicGammaCorrection;
 import backend.academy.model.image.Image;
 import backend.academy.model.image.Pixel;
+import backend.academy.processing.correction.logarithmicGammaCorrection.AbstractLogarithmicGammaCorrection;
 import java.util.Arrays;
 
 class ParallelStreamBasedCorrection extends AbstractLogarithmicGammaCorrection {

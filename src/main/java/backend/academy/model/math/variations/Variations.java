@@ -1,10 +1,15 @@
 package backend.academy.model.math.variations;
 
-
-import backend.academy.model.math.variations.implementations.*;
-import backend.academy.model.math.variations.SimpleVariation;
+import backend.academy.model.math.variations.implementations.Cross;
+import backend.academy.model.math.variations.implementations.Ex;
+import backend.academy.model.math.variations.implementations.Handkerchief;
+import backend.academy.model.math.variations.implementations.Horseshoe;
+import backend.academy.model.math.variations.implementations.Identity;
+import backend.academy.model.math.variations.implementations.Sinusoidal;
+import backend.academy.model.math.variations.implementations.Spherical;
+import backend.academy.model.math.variations.implementations.Swirl;
+import backend.academy.model.math.variations.implementations.Tangent;
 import it.unimi.dsi.fastutil.Pair;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +20,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.Getter;
 
+@SuppressWarnings("checkstyle:FinalClass")
+// Задумано, так, что объект вариаций строиться на основе уже известного набора вариаций
 public class Variations {
 
     private static final Variations ALL = new Variations(List
@@ -33,14 +40,14 @@ public class Variations {
         return ALL;
     }
 
+    private final List<Pair<String, SimpleVariation>> variations = new LinkedList<>();
+
     public static Variations get(Set<String> transformationsToChoose) {
         return new Variations(
             ALL.variations.stream()
                 .filter(transformation -> transformationsToChoose.contains(transformation.left()))
                 .toList());
     }
-
-    private final List<Pair<String, SimpleVariation>> variations = new LinkedList<>();
 
     private Variations(List<Pair<String, SimpleVariation>> variations) {
         this.variations.addAll(variations);

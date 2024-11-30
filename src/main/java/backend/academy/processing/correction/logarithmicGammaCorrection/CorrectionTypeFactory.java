@@ -4,5 +4,5 @@ import backend.academy.input.configuration.Modes;
 
 public interface CorrectionTypeFactory {
 
-    public AbstractLogarithmicGammaCorrection create(Modes mode, double gamma);
+    AbstractLogarithmicGammaCorrection create(Modes mode, double gamma);
 }

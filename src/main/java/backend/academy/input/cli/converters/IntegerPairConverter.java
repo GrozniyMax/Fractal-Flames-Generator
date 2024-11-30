@@ -10,9 +10,9 @@ public class IntegerPairConverter implements IStringConverter<Pair<Integer, Inte
     @Override
     public Pair<Integer, Integer> convert(String s) {
         try {
-            var splitted = s.replace(" +", "").split("x");
-            return Pair.of(Integer.parseInt(splitted[0]),
-                Integer.parseInt(splitted[1]));
+            var split = s.replace(" +", "").split("x");
+            return Pair.of(Integer.parseInt(split[0]),
+                Integer.parseInt(split[1]));
         } catch (NumberFormatException e) {
             throw new ParameterException("Unable to parse numbers from input");
         } catch (ArrayIndexOutOfBoundsException e) {

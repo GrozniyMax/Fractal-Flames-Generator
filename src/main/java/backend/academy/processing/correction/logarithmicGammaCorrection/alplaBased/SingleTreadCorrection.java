@@ -1,8 +1,8 @@
 package backend.academy.processing.correction.logarithmicGammaCorrection.alplaBased;
 
-import backend.academy.processing.correction.logarithmicGammaCorrection.AbstractLogarithmicGammaCorrection;
 import backend.academy.model.image.Image;
 import backend.academy.model.image.Pixel;
+import backend.academy.processing.correction.logarithmicGammaCorrection.AbstractLogarithmicGammaCorrection;
 
 class SingleTreadCorrection extends AbstractLogarithmicGammaCorrection {
 
@@ -28,7 +28,7 @@ class SingleTreadCorrection extends AbstractLogarithmicGammaCorrection {
                 if (current.hitCount() == 0) {
                     continue;
                 }
-                gammaFactor = Math.log10(current.hitCount())/maxLog;
+                gammaFactor = Math.log10(current.hitCount()) / maxLog;
                 image.get(j, i).setAlpha(gammaFactor);
             }
         }

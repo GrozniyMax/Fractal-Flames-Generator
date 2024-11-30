@@ -5,11 +5,11 @@ import backend.academy.model.math.symmetry.Symmetry;
 import backend.academy.model.math.transformations.BasicTransformation;
 import backend.academy.model.plot.Plot;
 import backend.academy.model.plot.Point;
+import java.awt.Color;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import java.awt.Color;
 
-public class SymmetrizedFunction extends Function{
+public class SymmetrizedFunction extends Function {
 
     private Symmetry symmetry;
 
@@ -18,7 +18,7 @@ public class SymmetrizedFunction extends Function{
         this.symmetry = symmetry;
     }
 
-    public SymmetrizedFunction(Function function, Symmetry symmetry){
+    public SymmetrizedFunction(Function function, Symmetry symmetry) {
         super(function.transformation, function.color);
         this.symmetry = symmetry;
     }
@@ -27,6 +27,10 @@ public class SymmetrizedFunction extends Function{
     public void put(Point point, Plot plot, Image image) {
         symmetry.apply(point)
             .forEach(point1 -> super.put(point1, plot, image));
+    }
+
+    public static Wrapper wrapper() {
+        return new Wrapper();
     }
 
     @AllArgsConstructor
@@ -39,12 +43,8 @@ public class SymmetrizedFunction extends Function{
             return this;
         }
 
-        public SymmetrizedFunction wrap(Function function){
+        public SymmetrizedFunction wrap(Function function) {
             return new SymmetrizedFunction(function, symmetry);
         }
-    }
-
-    public static Wrapper wrapper(){
-        return new Wrapper();
     }
 }

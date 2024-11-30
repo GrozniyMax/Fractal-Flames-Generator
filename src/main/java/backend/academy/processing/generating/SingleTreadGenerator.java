@@ -1,23 +1,24 @@
 package backend.academy.processing.generating;
 
-import backend.academy.processing.generating.functions.Function;
-import backend.academy.processing.generating.functions.Functions;
 import backend.academy.model.image.Image;
 import backend.academy.model.plot.Plot;
 import backend.academy.model.plot.Point;
 import backend.academy.output.cli.ProgressBar;
-import lombok.extern.log4j.Log4j2;
+import backend.academy.processing.generating.functions.Function;
+import backend.academy.processing.generating.functions.Functions;
 import java.io.PrintStream;
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-public class SingleTreadGenerator extends Generator{
+public class SingleTreadGenerator extends Generator {
 
     protected SingleTreadGenerator(Functions functions, Image image, Plot plot, int iterations, PrintStream out) {
         super(functions, image, plot, iterations, out);
     }
 
     public Image generate() {
-        log.debug("Setup generating parameters: iterations: {},  {}, image:{}x{}", iterations, plot, image.height(), image.width());
+        log.debug("Setup generating parameters: iterations: {},  {}, image:{}x{}", iterations, plot, image.height(),
+            image.width());
         Function functionToApply;
         Point point = generateFirst();
         ProgressBar bar = ProgressBar.createDefault(iterations, out);

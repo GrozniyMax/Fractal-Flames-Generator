@@ -1,6 +1,6 @@
 package backend.academy.processing.generating.functions;
 
-import backend.academy.model.math.MathFucntion;
+import backend.academy.model.math.MathFunction;
 import backend.academy.model.math.symmetry.Symmetry;
 import backend.academy.model.math.variations.Variations;
 import java.util.ArrayList;
@@ -12,23 +12,21 @@ public class Functions {
 
     private final List<Function> functions = new ArrayList<>();
 
-    public Functions add(Function f){
+    public Functions add(Function f) {
         functions.add(f);
         return this;
     }
 
-    public Function getRandom(){
+    public Function getRandom() {
         Random r = ThreadLocalRandom.current();
         return functions.get(r.nextInt(functions.size()));
     }
 
-    public void addSymmetry(Symmetry symmetry){
-        for (int i = 0; i < functions.size(); i++) {
-            functions.set(i, SymmetrizedFunction.wrapper().symmetry(symmetry).wrap(functions.get(i)));
-        }
+    public void addSymmetry(Symmetry symmetry) {
+        functions.replaceAll(function -> SymmetrizedFunction.wrapper().symmetry(symmetry).wrap(function));
     }
 
-    public void andThenForAll(MathFucntion fucntion) {
+    public void andThenForAll(MathFunction fucntion) {
         functions.forEach(function -> function.andThen(fucntion));
     }
 

@@ -1,24 +1,24 @@
 package backend.academy.processing.pipeline;
 
+import backend.academy.input.cli.CommandLineSettings;
+import backend.academy.input.configuration.Modes;
+import backend.academy.input.configuration.PipelineObject;
+import backend.academy.input.configuration.Settings;
 import backend.academy.input.configuration.ThreadCounts;
+import backend.academy.model.math.variations.Variations;
+import backend.academy.output.image.ImageWriter;
 import backend.academy.output.image.MultiTreadImageWriter;
+import backend.academy.output.image.SingleTreadImageWriter;
 import backend.academy.processing.correction.Corrector;
 import backend.academy.processing.generating.GeneratorBuilder;
 import backend.academy.processing.generating.functions.Functions;
-import backend.academy.input.configuration.Modes;
-import backend.academy.model.math.variations.Variations;
-import backend.academy.input.cli.CommandLineSettings;
-import backend.academy.output.image.ImageWriter;
-import backend.academy.output.image.SingleTreadImageWriter;
-import backend.academy.input.configuration.PipelineObject;
-import backend.academy.input.configuration.Settings;
-import lombok.Getter;
-import lombok.extern.log4j.Log4j2;
 import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Getter
@@ -40,45 +40,63 @@ public class PipelineBuilder {
 
     private ThreadCounts threadCounts;
 
-    public PipelineBuilder fill(PipelineObject rawPipelineObject) {
-        var completedPipelineObject = rawPipelineObject.complete();
-        this.imageMode = rawPipelineObject.imageMode();
+    private void buildWriter() {
+        switch (mode) {
+            case SINGLE_THREAD, OPTIMAL -> writer = new SingleTreadImageWriter();
+            case MULTI_THREAD -> writer = new MultiTreadImageWriter(threadCounts.imageWriter());
+            case null, default -> throw new IllegalArgumentException("Unknown application mode");
+        }
+    }
 
-        this.generatorBuilder
-            .plotX(completedPipelineObject.plot().x())
-            .plotY(completedPipelineObject.plot().y())
-            .plotWidth(completedPipelineObject.plot().width())
-            .plotHeight(completedPipelineObject.plot().height());
+    private void fillCorrectors(PipelineObject pipelineObject) {
+        this.correctors = pipelineObject.corrections().stream()
+            .map((correction) -> correction.getRealType(mode))
+            .toList();
+    }
 
-        switch (completedPipelineObject.mode()) {
-            case MULTI_THREAD, OPTIMAL -> {
-                writer = new MultiTreadImageWriter(threadCounts.imageWriter());
-                this.generatorBuilder.mode(Modes.MULTI_THREAD);
-            }
-            case SINGLE_THREAD -> {
-                this.generatorBuilder.mode(Modes.SINGLE_THREAD);
-                writer = new SingleTreadImageWriter();
-            }
+    private Functions fillFunctions(Settings settings) {
+        Functions functions = new Functions();
+        settings.functions()
+            .forEach(functionObject -> functions.add(functionObject.toFunction()));
+
+        if (Objects.nonNull(settings.activeVariations())) {
+            functions.setVariationsForAll(
+                Variations.get(settings.activeVariations())
+            );
         }
 
-        this.correctors = completedPipelineObject.corrections();
-//        this.generatorBuilder.mode(completedPipelineObject.mode());
-        this.mode = completedPipelineObject.mode();
+        settings.pipeline().postTransformations()
+            .forEach(functions::andThenForAll);
+
+        if (Objects.nonNull(settings.pipeline().symmetry())) {
+            functions.addSymmetry(settings.pipeline().symmetry());
+        }
+        return functions;
+    }
+
+    private void fill(ThreadCounts counts) {
+        this.generatorBuilder.threadCounts(counts.generator());
+        this.threadCounts = counts;
+    }
+
+    public PipelineBuilder fill(PipelineObject rawPipelineObject) {
+        this.mode = rawPipelineObject.mode();
+        this.imageMode = rawPipelineObject.imageMode();
+
+        this.generatorBuilder.mode(mode)
+            .plotX(rawPipelineObject.plot().x())
+            .plotY(rawPipelineObject.plot().y())
+            .plotWidth(rawPipelineObject.plot().width())
+            .plotHeight(rawPipelineObject.plot().height());
+
+        fillCorrectors(rawPipelineObject);
 
         return this;
     }
 
     public PipelineBuilder fill(Settings settings) {
-        Functions functions = new Functions();
-        settings.functions()
-            .forEach(f -> functions.add(f.toFunction()));
-
-        if (Objects.nonNull(settings.activeVariations())) {
-            functions.setVariationsForAll(Variations.get(settings.activeVariations()));
-        }
-        this.generatorBuilder.functions(functions);
-        this.threadCounts = settings.threadCounts();
-        this.generatorBuilder.threadCounts(threadCounts.generator());
+        fill(settings.threadCounts());
+        this.generatorBuilder.functions(fillFunctions(settings));
         return fill(settings.pipeline());
     }
 
@@ -100,6 +118,8 @@ public class PipelineBuilder {
     }
 
     public AbstractPipeline build() {
+        buildWriter();
+
         switch (mode) {
             case Modes.MULTI_THREAD -> {
                 return new AsyncPipeline(
@@ -122,19 +142,8 @@ public class PipelineBuilder {
                     this.imageMode
                 );
             }
+            default -> throw new IllegalArgumentException("Unknown/non stated mode");
         }
-        throw new IllegalArgumentException("Unknown/Not stated mode");
     }
-
-//    public AbstractPipeline build() {
-//        return new Pipeline(
-//            generatorBuilder.build(),
-//            this.correctors,
-//            this.writer,
-//            this.outputFile,
-//            this.out,
-//            this.imageMode
-//        );
-//    }
 
 }

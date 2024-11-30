@@ -1,10 +1,10 @@
 package backend.academy.processing.generating;
 
-import backend.academy.processing.generating.functions.Functions;
+import backend.academy.input.configuration.Modes;
 import backend.academy.model.image.Image;
 import backend.academy.model.math.variations.Variations;
 import backend.academy.model.plot.Plot;
-import backend.academy.input.configuration.Modes;
+import backend.academy.processing.generating.functions.Functions;
 import java.io.PrintStream;
 
 public class GeneratorBuilder {
@@ -94,7 +94,7 @@ public class GeneratorBuilder {
             case SINGLE_THREAD -> {
                 return new SingleTreadGenerator(functions, image, plot, iterations, out);
             }
-            case MULTI_THREAD -> {
+            case MULTI_THREAD, OPTIMAL -> {
                 return new YetAnotherThreadPoolGenerator(functions, image, plot, iterations, out, threadsCount);
             }
             case null, default -> {

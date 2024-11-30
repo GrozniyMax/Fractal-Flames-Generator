@@ -4,6 +4,9 @@ import com.beust.jcommander.IStringConverter;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.doubles.DoubleDoubleImmutablePair;
 
+/**
+ * Сейчас не используется
+ */
 public class DoublePairConverter implements IStringConverter<Pair<Double, Double>> {
     @Override
     public Pair<Double, Double> convert(String value) {

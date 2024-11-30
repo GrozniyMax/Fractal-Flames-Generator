@@ -4,11 +4,11 @@ import backend.academy.model.plot.Point;
 import java.util.function.Function;
 
 @FunctionalInterface
-public interface MathFucntion extends Function<Point, Point> {
+public interface MathFunction extends Function<Point, Point> {
 
     Point apply(Point point);
 
-    default MathFucntion andThen(MathFucntion after) {
+    default MathFunction andThen(MathFunction after) {
         return new Composition<>(this, after);
     }
 }

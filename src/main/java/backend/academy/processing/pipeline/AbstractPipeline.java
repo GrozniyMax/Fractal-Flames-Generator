@@ -1,12 +1,12 @@
 package backend.academy.processing.pipeline;
 
+import backend.academy.output.image.ImageWriter;
 import backend.academy.processing.correction.Corrector;
 import backend.academy.processing.generating.Generator;
-import backend.academy.output.image.ImageWriter;
-import lombok.RequiredArgsConstructor;
 import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public abstract class AbstractPipeline {

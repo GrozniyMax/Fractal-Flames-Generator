@@ -4,6 +4,9 @@ import backend.academy.model.plot.Point;
 import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.ParameterException;
 
+/**
+ * Планировал использовать для передачи точки через аргументы командной строки. Сейчас не используется
+ */
 public class PointConverter implements IStringConverter<Point> {
     @Override
     public Point convert(String s) {

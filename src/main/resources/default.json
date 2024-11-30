@@ -7,7 +7,7 @@
                     "generated" : "random"
                 }
             },
-            "color": [255, 0, 0]
+            "color": "random"
         },
         {
             "transformation": {
@@ -35,17 +35,21 @@
         "post-transformations": [
 
         ],
+        "symmetry": {
+            "type": "radial",
+            "sectors": 6
+        },
 
         "correction": [
             {
                 "type": "logarithmic",
                 "correction-base": "color-based",
-                "gamma": 0.7
+                "gamma": 1.7
             },
             {
                 "type": "logarithmic",
                 "correction-base": "alpha-based",
-                "gamma": 0.2
+                "gamma": 1.2
             }
 
         ]

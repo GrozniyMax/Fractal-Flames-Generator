@@ -1,16 +1,15 @@
 package backend.academy.processing.correction.logarithmicGammaCorrection.colorBased;
 
-import backend.academy.processing.correction.logarithmicGammaCorrection.AbstractLogarithmicGammaCorrection;
 import backend.academy.model.image.Image;
 import backend.academy.model.image.Pixel;
-import lombok.extern.log4j.Log4j2;
-
+import backend.academy.processing.correction.logarithmicGammaCorrection.AbstractLogarithmicGammaCorrection;
 import java.util.Arrays;
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 class ParallelStreamsBasedCorrection extends AbstractLogarithmicGammaCorrection {
 
-    public ParallelStreamsBasedCorrection(double gamma) {
+    ParallelStreamsBasedCorrection(double gamma) {
         super(gamma);
     }
 

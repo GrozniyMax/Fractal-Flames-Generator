@@ -5,14 +5,15 @@ import backend.academy.model.plot.Point;
 
 public class Ex implements SimpleVariation {
 
-    private double p0(Point p){
+    private double p0(Point p) {
         return Math.sin(SimpleVariation.calculateTheta(p) + SimpleVariation.calculateR(p));
     }
 
-    private double p1(Point p){
+    private double p1(Point p) {
         return Math.cos(SimpleVariation.calculateTheta(p) - SimpleVariation.calculateR(p));
     }
 
+    @SuppressWarnings("checkstyle:MagicNumber")
     @Override
     public Point apply(Point point) {
         double p0Cubed = Math.pow(p0(point), 3);

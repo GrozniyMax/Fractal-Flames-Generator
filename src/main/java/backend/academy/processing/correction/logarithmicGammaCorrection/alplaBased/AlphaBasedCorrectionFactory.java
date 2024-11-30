@@ -1,8 +1,8 @@
 package backend.academy.processing.correction.logarithmicGammaCorrection.alplaBased;
 
+import backend.academy.input.configuration.Modes;
 import backend.academy.processing.correction.logarithmicGammaCorrection.AbstractLogarithmicGammaCorrection;
 import backend.academy.processing.correction.logarithmicGammaCorrection.CorrectionTypeFactory;
-import backend.academy.input.configuration.Modes;
 
 public class AlphaBasedCorrectionFactory implements CorrectionTypeFactory {
     @Override
@@ -14,7 +14,7 @@ public class AlphaBasedCorrectionFactory implements CorrectionTypeFactory {
             case MULTI_THREAD, OPTIMAL -> {
                 return new ParallelStreamBasedCorrection(gamma);
             }
-            case null, default ->{
+            case null, default -> {
                 throw new IllegalArgumentException("Unsupported mode");
             }
         }

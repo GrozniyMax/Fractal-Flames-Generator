@@ -4,10 +4,10 @@ import backend.academy.model.plot.Point;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class Composition<T extends MathFucntion> implements MathFucntion {
+public class Composition<T extends MathFunction> implements MathFunction {
 
     private final T basin;
-    private final MathFucntion wrapping;
+    private final MathFunction wrapping;
 
     @Override
     public Point apply(Point point) {

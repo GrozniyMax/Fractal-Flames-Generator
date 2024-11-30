@@ -1,11 +1,11 @@
 package backend.academy.output.image;
 
 import backend.academy.model.image.Image;
-import lombok.extern.log4j.Log4j2;
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
+import javax.imageio.ImageIO;
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class SingleTreadImageWriter implements ImageWriter {
@@ -16,7 +16,7 @@ public class SingleTreadImageWriter implements ImageWriter {
 
         for (int i = 0; i < imageToWrite.height(); i++) {
             for (int j = 0; j < imageToWrite.width(); j++) {
-                image.setRGB(j, i, mode.getColor(imageToWrite.get(j, i)).getRGB());
+                image.setRGB(j, i, mode.getColorInt(imageToWrite.get(j, i)));
             }
         }
 

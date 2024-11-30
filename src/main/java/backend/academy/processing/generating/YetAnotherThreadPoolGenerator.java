@@ -1,15 +1,15 @@
 package backend.academy.processing.generating;
 
-import backend.academy.processing.generating.functions.Function;
-import backend.academy.processing.generating.functions.Functions;
 import backend.academy.model.image.Image;
 import backend.academy.model.plot.Plot;
 import backend.academy.model.plot.Point;
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import backend.academy.processing.generating.functions.Function;
+import backend.academy.processing.generating.functions.Functions;
 import java.io.PrintStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Поскольку в рамках нашего алгоритма, влияние случайности достаточно большое, то внесем еще большее ее влияние.<br>
@@ -18,11 +18,11 @@ import java.util.concurrent.Executors;
 @Log4j2
 public class YetAnotherThreadPoolGenerator extends Generator {
 
-    private final int SAMPLES = 100;
+    private static final int SAMPLES = 100;
 
-    private ExecutorService executor;
+    private final ExecutorService executor;
 
-    private final int ITERATIONS_PER_SAMPLE = this.iterations/SAMPLES + 1;
+    private final int iterationsPerSample = this.iterations / SAMPLES + 1;
 
     protected YetAnotherThreadPoolGenerator(
         Functions functions,
@@ -33,31 +33,13 @@ public class YetAnotherThreadPoolGenerator extends Generator {
         int threadsCount
     ) {
         super(functions, image, plot, iterations, out);
-        executor= Executors.newFixedThreadPool(threadsCount);
+        executor = Executors.newFixedThreadPool(threadsCount);
         log.debug("Thread-count: {}", threadsCount);
     }
 
-    @AllArgsConstructor
-    private class ExecuteTask implements Runnable{
-
-        private Point point;
-
-        @Override
-        public void run() {
-//            log.debug("{} started generating", Thread.currentThread().getName());
-            Function functionToApply;
-            for (int i= 0; i<ITERATIONS_PER_SAMPLE; i++) {
-                functionToApply = functions.getRandom();
-                point = functionToApply.accept(point);
-                functionToApply.put(point, plot, image);
-            }
-//            log.debug("{} finished generating", Thread.currentThread().getName());
-
-        }
-    }
     @Override
     public Image generate() {
-        log.debug("Started generation with {} samples and {} iterations per sample", SAMPLES, ITERATIONS_PER_SAMPLE);
+        log.debug("Started generation with {} samples and {} iterations per sample", SAMPLES, iterationsPerSample);
 
         // подготавливаем
         Point p = Point.random();
@@ -72,5 +54,21 @@ public class YetAnotherThreadPoolGenerator extends Generator {
         executor.close();
         log.debug("Completed generation");
         return image;
+    }
+
+    @AllArgsConstructor
+    private final class ExecuteTask implements Runnable {
+
+        private Point point;
+
+        @Override
+        public void run() {
+            Function functionToApply;
+            for (int i = 0; i < iterationsPerSample; i++) {
+                functionToApply = functions.getRandom();
+                point = functionToApply.accept(point);
+                functionToApply.put(point, plot, image);
+            }
+        }
     }
 }

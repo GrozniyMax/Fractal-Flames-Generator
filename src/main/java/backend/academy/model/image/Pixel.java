@@ -1,15 +1,15 @@
 package backend.academy.model.image;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.log4j.Log4j2;
-import org.checkerframework.common.value.qual.IntRange;
 import java.awt.Color;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class Pixel {
+    private static final int MAX_RGB_VALUE = 255;
+    private static final int MIN_RGB_VALUE = 0;
 
     // честный, чтобы хоть как то попытаться обеспечить правильный порядок
     private final ReadWriteLock mainLock = new ReentrantReadWriteLock(true);
@@ -17,7 +17,7 @@ public class Pixel {
     private int r;
     private int g;
     private int b;
-    private int alpha = 0;
+    private int alpha;
 
     @Getter
     private int hitCount = 0;
@@ -75,16 +75,14 @@ public class Pixel {
     }
 
     public void multiplyAlpha(double value) {
-
         alpha = (int) (alpha * value);
-
     }
 
     /**
      * Переводит число из диапазона 0-1 в диапазон 0-255 и ставит его вместо
      */
     public void setAlpha(double value) {
-        this.alpha = (int) (value * 255);
+        this.alpha = (int) (value * MAX_RGB_VALUE);
     }
 
     public void multiplyAll(double value) {
@@ -104,8 +102,7 @@ public class Pixel {
     }
 
     private static int bound(int value) {
-        return Math.min(Math.max(0, value), 255);
-
+        return Math.min(Math.max(MIN_RGB_VALUE, value), MAX_RGB_VALUE);
     }
 
 }

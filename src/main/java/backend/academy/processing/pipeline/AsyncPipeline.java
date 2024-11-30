@@ -1,11 +1,10 @@
 package backend.academy.processing.pipeline;
 
-import backend.academy.processing.correction.Corrector;
-import backend.academy.processing.generating.Generator;
 import backend.academy.model.image.Image;
 import backend.academy.output.image.ImageWriter;
 import backend.academy.processing.GeneratingError;
-import lombok.extern.log4j.Log4j2;
+import backend.academy.processing.correction.Corrector;
+import backend.academy.processing.generating.Generator;
 import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.List;
@@ -13,6 +12,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class AsyncPipeline extends AbstractPipeline {

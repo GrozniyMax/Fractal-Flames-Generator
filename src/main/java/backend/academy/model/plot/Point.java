@@ -1,19 +1,17 @@
 package backend.academy.model.plot;
 
-import lombok.ToString;
-
 /**
- * @param x
- * @param y
+ * @param x координата по оси абсцисс
+ * @param y координата по оси ординат
  */
 public record Point(double x, double y) {
 
     public Point multiply(double weight) {
-        return new Point(x*weight, y*weight);
+        return new Point(x * weight, y * weight);
     }
 
     public Point add(Point p) {
-        return new Point(x+ p.x(), y+ p.y);
+        return new Point(x + p.x(), y + p.y);
     }
 
     public static Point empty() {
@@ -21,6 +19,6 @@ public record Point(double x, double y) {
     }
 
     public static Point random() {
-        return new Point(Math.random()*2-1, Math.random()*2-1);
+        return new Point(Math.random() * 2 - 1, Math.random() * 2 - 1);
     }
 }
