@@ -37,15 +37,11 @@
         ],
         "symmetry": {
             "type": "radial",
-            "sectors": 6
+            "sectors": 4
         },
 
         "correction": [
-            {
-                "type": "logarithmic",
-                "correction-base": "color-based",
-                "gamma": 1.7
-            },
+
             {
                 "type": "logarithmic",
                 "correction-base": "alpha-based",

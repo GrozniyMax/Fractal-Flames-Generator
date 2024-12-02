@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 
 public interface ImageWriter {
 
-    Color BACKGROUND_COLOR = Color.BLACK;
-
     @RequiredArgsConstructor
     enum ImageMode {
         RGB(BufferedImage.TYPE_INT_RGB, Pixel::asRGB),
@@ -46,8 +44,7 @@ public interface ImageWriter {
 
     default BufferedImage addBackground(BufferedImage src) {
         BufferedImage result = new BufferedImage(src.getWidth(), src.getHeight(), src.getType());
-        result.getGraphics().setColor(BACKGROUND_COLOR);
-        result.getGraphics().fillRect(0, 0, result.getWidth(), result.getHeight());
+        result.getGraphics().clearRect(0, 0, result.getWidth(), result.getHeight());
         result.getGraphics().drawImage(src, 0, 0, null);
         return result;
     }

@@ -23,11 +23,29 @@ public class ColorDeserializer extends JsonDeserializer<Color> {
             Random r = ThreadLocalRandom.current();
             return ColorUtils.getRandomRGB();
         } else if (node.isObject()) {
-            return new Color(node.get("r").asInt(), node.get("g").asInt(), node.get("b").asInt());
+            int r = node.get("r").asInt();
+            int g = node.get("g").asInt();
+            int b = node.get("b").asInt();
+            checkBounds(r);
+            checkBounds(g);
+            checkBounds(b);
+            return new Color(r, g, b);
         } else if (node.isArray()) {
-            return new Color(node.get(0).asInt(), node.get(1).asInt(), node.get(2).asInt());
+            int r = node.get(0).asInt();
+            int g = node.get(1).asInt();
+            int b = node.get(2).asInt();
+            checkBounds(r);
+            checkBounds(g);
+            checkBounds(b);
+            return new Color(r, g, b);
         } else {
             throw new IllegalArgumentException("Invalid color format");
+        }
+    }
+
+    private void checkBounds(int value) {
+        if (value < 0 || value > 255) {
+            throw new IllegalArgumentException("Invalid color part: It must be from 0 to 255");
         }
     }
 }

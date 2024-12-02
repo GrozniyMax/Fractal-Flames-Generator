@@ -6,10 +6,12 @@ import backend.academy.model.plot.Point;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import lombok.EqualsAndHashCode;
 
 /**
  * Аффинное(линейное) преобразование
  */
+@EqualsAndHashCode
 @JsonDeserialize(using = AffineTransformationDeserialization.class)
 public class AffineTransformation extends BasicTransformation {
 

@@ -22,17 +22,17 @@ public class PlotDeserializer extends JsonDeserializer<Plot> {
             return DEFAULT;
         } else if (node.isObject()) {
             return new Plot(
-                node.get("x").asInt(),
-                node.get("y").asInt(),
-                node.get("width").asInt(),
-                node.get("height").asInt()
+                node.get("x").asDouble(),
+                node.get("y").asDouble(),
+                node.get("width").asDouble(),
+                node.get("height").asDouble()
             );
         } else if (node.isArray()) {
             return new Plot(
-                node.get(0).asInt(),
-                node.get(1).asInt(),
-                node.get(2).asInt(),
-                node.get(3).asInt()
+                node.get(0).asDouble(),
+                node.get(1).asDouble(),
+                node.get(2).asDouble(),
+                node.get(3).asDouble()
             );
         } else {
             throw new IllegalArgumentException("Invalid color format");
