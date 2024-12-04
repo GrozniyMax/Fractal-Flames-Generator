@@ -1,6 +1,5 @@
 package backend.academy.processing.correction.logarithmicGammaCorrection;
 
-import backend.academy.model.image.Image;
 import backend.academy.processing.correction.Corrector;
 
 public abstract class AbstractLogarithmicGammaCorrection implements Corrector {
