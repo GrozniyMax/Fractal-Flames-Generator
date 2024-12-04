@@ -24,4 +24,8 @@ public abstract class AbstractLogarithmicGammaCorrection implements Corrector {
         }
         return hitMax;
     }
+
+    protected double maxLog(Image image) {
+        return Math.log10(maxHit(image));
+    }
 }

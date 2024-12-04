@@ -12,7 +12,7 @@ class SingleTreadCorrection extends AbstractLogarithmicGammaCorrection {
 
     @Override
     public void accept(Image image) {
-        double maxLog = Math.log10(maxHit(image));
+        double maxLog = maxLog(image);
         double gammaFactor;
         Pixel current;
         for (int i = 0; i < image.height(); i++) {
