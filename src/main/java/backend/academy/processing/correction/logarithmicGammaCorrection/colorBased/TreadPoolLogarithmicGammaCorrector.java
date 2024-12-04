@@ -12,8 +12,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 /**
- * @deprecated первая версия многопоточного корректора
+ * Первая версия многопоточного корректора
+ *
  * @see ParallelStreamsBasedCorrection
+ * @deprecated первая версия многопоточного корректора
  */
 @Log4j2
 public class TreadPoolLogarithmicGammaCorrector extends AbstractLogarithmicGammaCorrection {
@@ -24,50 +26,11 @@ public class TreadPoolLogarithmicGammaCorrector extends AbstractLogarithmicGamma
         super(gamma);
     }
 
-    @RequiredArgsConstructor
-    private final static class ArrayMaxTask implements Callable<Integer> {
-
-        private final int rowIndex;
-        private final Image image;
-
-        @Override
-        public Integer call() throws Exception {
-            int max = image.get(0, rowIndex).hitCount();
-            int currentHitCount;
-            for (int i = 1; i < image.width(); i++) {
-                currentHitCount = image.get(i, rowIndex).hitCount();
-                if (max<currentHitCount) {
-                    max = currentHitCount;
-                }
-            }
-
-            return max;
-        }
-    }
-
-    @RequiredArgsConstructor
-    private final static class UpdatePixelsTast implements Runnable{
-        private final int row;
-        private final double maxHitLog;
-        private final double gamma;
-        private final Image image;
-
-        @Override
-        public void run() {
-            double gammaFactor;
-            for (int i = 0; i < image.width(); i++) {
-                gammaFactor = Math.log(image.get(i, row).hitCount()) / maxHitLog;
-                gammaFactor = gammaFactor * gamma;
-                image.get(i, row).multiplyColor(gammaFactor);
-            }
-        }
-    }
-
     @Override
     public void accept(Image image) {
-        double maxLog  = Math.log(
+        double maxLog = Math.log(
             IntStream.range(0, image.height())
-                .mapToObj(index->new ArrayMaxTask(index, image))
+                .mapToObj(index -> new ArrayMaxTask(index, image))
                 .map(executorService::submit)
                 .map(this::get)
                 .max(Integer::compareTo)
@@ -85,6 +48,45 @@ public class TreadPoolLogarithmicGammaCorrector extends AbstractLogarithmicGamma
         } catch (ExecutionException e) {
             log.error("Error in generating");
             throw new RuntimeException(e);
+        }
+    }
+
+    @RequiredArgsConstructor
+    private final static class UpdatePixelsTast implements Runnable {
+        private final int row;
+        private final double maxHitLog;
+        private final double gamma;
+        private final Image image;
+
+        @Override
+        public void run() {
+            double gammaFactor;
+            for (int i = 0; i < image.width(); i++) {
+                gammaFactor = Math.log(image.get(i, row).hitCount()) / maxHitLog;
+                gammaFactor = gammaFactor * gamma;
+                image.get(i, row).multiplyColor(gammaFactor);
+            }
+        }
+    }
+
+    @RequiredArgsConstructor
+    private final static class ArrayMaxTask implements Callable<Integer> {
+
+        private final int rowIndex;
+        private final Image image;
+
+        @Override
+        public Integer call() {
+            int max = image.get(0, rowIndex).hitCount();
+            int currentHitCount;
+            for (int i = 1; i < image.width(); i++) {
+                currentHitCount = image.get(i, rowIndex).hitCount();
+                if (max < currentHitCount) {
+                    max = currentHitCount;
+                }
+            }
+
+            return max;
         }
     }
 }
