@@ -119,7 +119,7 @@ public class PipelineBuilder {
 
     public AbstractPipeline build() {
         buildWriter();
-
+        validate();
         switch (mode) {
             case Modes.MULTI_THREAD -> {
                 return new AsyncPipeline(
@@ -143,6 +143,56 @@ public class PipelineBuilder {
                 );
             }
             default -> throw new IllegalArgumentException("Unknown/non stated mode");
+        }
+    }
+
+    private void validate() {
+        validateThreadCounts();
+        if (Objects.isNull(imageMode)) {
+            throw new IllegalArgumentException("Image mode is not set");
+        }
+        if (Objects.isNull(outputFile)) {
+            throw new IllegalArgumentException("Output file is not set");
+        }
+        if (Objects.isNull(out)) {
+            throw new IllegalArgumentException("Problems with output stream");
+        }
+    }
+
+    private void validateThreadCounts() {
+        switch (mode) {
+            case null -> throw new IllegalArgumentException("Mode is not set");
+            case MULTI_THREAD -> {
+                if (Objects.isNull(threadCounts)) {
+                    throw new IllegalArgumentException("Thread counts are not set. Check your configuration file");
+                }
+                if (threadCounts.generator() < 1) {
+                    throw new IllegalArgumentException("Generator thread count is less than 1. Check config");
+                }
+                if (threadCounts.pipeline() < 1) {
+                    throw new IllegalArgumentException("Pipeline thread count is less than 1. Check config");
+                }
+                if (threadCounts.imageWriter() < 1) {
+                    throw new IllegalArgumentException("Image writer thread count is less than 1. Check config");
+                }
+            }
+            case OPTIMAL -> {
+                if (Objects.isNull(threadCounts)) {
+                    throw new IllegalArgumentException("Thread counts are not set");
+                }
+                if (threadCounts.generator() < 1) {
+                    throw new IllegalArgumentException("Generator thread count is less than 1");
+                }
+                if (threadCounts.pipeline() < 1) {
+                    throw new IllegalArgumentException("Pipeline thread count is less than 1");
+                }
+                if (threadCounts.imageWriter() < 1) {
+                    throw new IllegalArgumentException("Image writer thread count is less than 1");
+                }
+            }
+            case SINGLE_THREAD -> {
+                // do nothing;
+            }
         }
     }
 

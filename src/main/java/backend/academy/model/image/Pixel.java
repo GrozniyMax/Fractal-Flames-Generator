@@ -61,28 +61,56 @@ public class Pixel {
     }
 
     public void setColor(Color color) {
-
-        this.r = color.getRed();
-        this.b = color.getBlue();
-        this.g = color.getGreen();
-        this.alpha = color.getAlpha();
+        mainLock.writeLock().lock();
+        mainLock.readLock().lock();
+        try {
+            this.r = color.getRed();
+            this.b = color.getBlue();
+            this.g = color.getGreen();
+            this.alpha = color.getAlpha();
+        } finally {
+            mainLock.writeLock().unlock();
+            mainLock.readLock().unlock();
+        }
     }
 
     public void multiplyColor(double value) {
-        this.r = (int) (r * value);
-        this.g = (int) (g * value);
-        this.b = (int) (b * value);
+        mainLock.writeLock().lock();
+        mainLock.readLock().lock();
+        try {
+            this.r = (int) (r * value);
+            this.g = (int) (g * value);
+            this.b = (int) (b * value);
+        } finally {
+            mainLock.writeLock().unlock();
+            mainLock.readLock().unlock();
+        }
+
     }
 
     public void multiplyAlpha(double value) {
-        alpha = (int) (alpha * value);
+        mainLock.writeLock().lock();
+        mainLock.readLock().lock();
+        try {
+            alpha = (int) (alpha * value);
+        } finally {
+            mainLock.writeLock().unlock();
+            mainLock.readLock().unlock();
+        }
     }
 
     /**
      * Переводит число из диапазона 0-1 в диапазон 0-255 и ставит его вместо
      */
     public void setAlpha(double value) {
-        this.alpha = (int) (value * MAX_RGB_VALUE);
+        mainLock.writeLock().lock();
+        mainLock.readLock().lock();
+        try {
+            this.alpha = (int) (value * MAX_RGB_VALUE);
+        } finally {
+            mainLock.writeLock().unlock();
+            mainLock.readLock().unlock();
+        }
     }
 
     public void multiplyAll(double value) {

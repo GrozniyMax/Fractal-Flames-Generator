@@ -41,7 +41,6 @@ public class Image {
 
     public void put(int x, int y, Color color) {
         if (!contains(x, y)) {
-            Main.count++;
             return;
         }
         data[y][x].hit(color);

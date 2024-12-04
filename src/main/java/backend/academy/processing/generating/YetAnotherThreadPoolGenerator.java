@@ -33,6 +33,9 @@ public class YetAnotherThreadPoolGenerator extends Generator {
         int threadsCount
     ) {
         super(functions, image, plot, iterations, out);
+        if (threadsCount <= 0) {
+            throw new IllegalArgumentException("Threads count must be greater than 0");
+        }
         executor = Executors.newFixedThreadPool(threadsCount);
         log.debug("Thread-count: {}", threadsCount);
     }

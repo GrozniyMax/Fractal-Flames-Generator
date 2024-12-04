@@ -23,7 +23,6 @@ import org.apache.logging.log4j.core.config.Configurator;
 @UtilityClass
 public class Main {
 
-    public static int count;
 
     @SuppressWarnings("checkstyle:ReturnCount")
     public static void main(String[] args) throws IOException {
@@ -96,11 +95,14 @@ public class Main {
             pipelineBuilder
                 .build()
                 .run();
+        } catch (IllegalArgumentException e) {
+            out.println("Invalid settings due to: " + e.getMessage());
+            log.debug(e);
+            return;
         } catch (Exception e) {
             out.println("Unexpected error while generating image. Sorry but image was not generates");
             throw new RuntimeException(e);
         }
-        log.debug("{} points were skipped because they're out of image size", count);
         long end = System.currentTimeMillis();
         log.info("Execution time: {}", end - start);
 
@@ -108,8 +110,10 @@ public class Main {
 
     private InputStream createReader(Path path) throws FileNotFoundException {
         if (Objects.isNull(path)) {
+            log.debug("Config file path is not set. Using default settings");
             return Main.class.getResourceAsStream("/default.json");
         } else {
+            log.debug("Config file path: {}", path);
             return new FileInputStream(path.toFile());
         }
     }
