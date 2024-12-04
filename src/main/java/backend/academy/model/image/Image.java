@@ -1,6 +1,5 @@
 package backend.academy.model.image;
 
-import backend.academy.Main;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.stream.Stream;

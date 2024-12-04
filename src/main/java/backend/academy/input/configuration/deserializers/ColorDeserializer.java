@@ -15,6 +15,10 @@ import java.util.concurrent.ThreadLocalRandom;
  * Десериализатор для афaинных преобразований {@link Color}. Сделан, чтобы учитывать параметр рандом
  */
 public class ColorDeserializer extends JsonDeserializer<Color> {
+
+    public static final int MAX_RGB_VALUE = 255;
+    public static final int MIN_RGB_VALUE = 0;
+
     @Override
     public Color deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
 
@@ -31,7 +35,7 @@ public class ColorDeserializer extends JsonDeserializer<Color> {
             checkBounds(b);
             return new Color(r, g, b);
         } else if (node.isArray()) {
-            int r = node.get(0).asInt();
+            int r = node.get(MIN_RGB_VALUE).asInt();
             int g = node.get(1).asInt();
             int b = node.get(2).asInt();
             checkBounds(r);
@@ -44,7 +48,8 @@ public class ColorDeserializer extends JsonDeserializer<Color> {
     }
 
     private void checkBounds(int value) {
-        if (value < 0 || value > 255) {
+
+        if (value < MIN_RGB_VALUE || value > MAX_RGB_VALUE) {
             throw new IllegalArgumentException("Invalid color part: It must be from 0 to 255");
         }
     }

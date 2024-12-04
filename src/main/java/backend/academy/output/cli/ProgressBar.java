@@ -1,8 +1,8 @@
 package backend.academy.output.cli;
 
+import java.io.PrintStream;
 import lombok.Builder;
 import lombok.extern.log4j.Log4j2;
-import java.io.PrintStream;
 
 @Log4j2
 public class ProgressBar {
@@ -23,6 +23,7 @@ public class ProgressBar {
         this.length = length;
     }
 
+    @SuppressWarnings("checkstyle:MagicNumber")
     public void update(int currentIteration) {
 
         // Обновили счетчик

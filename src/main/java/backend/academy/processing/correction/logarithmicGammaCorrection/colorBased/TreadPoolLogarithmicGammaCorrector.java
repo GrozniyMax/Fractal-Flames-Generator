@@ -1,16 +1,15 @@
 package backend.academy.processing.correction.logarithmicGammaCorrection.colorBased;
 
-import backend.academy.processing.correction.logarithmicGammaCorrection.AbstractLogarithmicGammaCorrection;
 import backend.academy.model.image.Image;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-
+import backend.academy.processing.correction.logarithmicGammaCorrection.AbstractLogarithmicGammaCorrection;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.stream.IntStream;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * @deprecated первая версия многопоточного корректора
@@ -26,7 +25,7 @@ public class TreadPoolLogarithmicGammaCorrector extends AbstractLogarithmicGamma
     }
 
     @RequiredArgsConstructor
-    private static class ArrayMaxTask implements Callable<Integer> {
+    private final static class ArrayMaxTask implements Callable<Integer> {
 
         private final int rowIndex;
         private final Image image;
@@ -47,7 +46,7 @@ public class TreadPoolLogarithmicGammaCorrector extends AbstractLogarithmicGamma
     }
 
     @RequiredArgsConstructor
-    private static class UpdatePixelsTast implements Runnable{
+    private final static class UpdatePixelsTast implements Runnable{
         private final int row;
         private final double maxHitLog;
         private final double gamma;
@@ -67,13 +66,13 @@ public class TreadPoolLogarithmicGammaCorrector extends AbstractLogarithmicGamma
     @Override
     public void accept(Image image) {
         double maxLog  = Math.log(
-        IntStream.range(0, image.height())
-            .mapToObj(index->new ArrayMaxTask(index, image))
-            .map(executorService::submit)
-            .map(this::get)
-            .max(Integer::compareTo)
-            .map(Number::doubleValue)
-            .orElse(0.0)
+            IntStream.range(0, image.height())
+                .mapToObj(index->new ArrayMaxTask(index, image))
+                .map(executorService::submit)
+                .map(this::get)
+                .max(Integer::compareTo)
+                .map(Number::doubleValue)
+                .orElse(0.0)
         );
     }
 
